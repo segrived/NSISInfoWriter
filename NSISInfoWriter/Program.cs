@@ -51,6 +51,12 @@ namespace NSISInfoWriter
                     if (hg.IsAvailableVCSExecutable() && hg.IsUnderControl()) {
                         generator.AddRange(hg.GetInformation());
                     }
+
+                    // mercurial related information
+                    var svn = new VCSInformationParser.SubversionParser(inputDir);
+                    if (svn.IsAvailableVCSExecutable() && svn.IsUnderControl()) {
+                        generator.AddRange(svn.GetInformation());
+                    }
                 }
 
                 generator.Save();
