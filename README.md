@@ -32,21 +32,30 @@ VI_FMT_FILEVERSION        File version (formatted)
 VI_COPYRIGHTS             Input file copyrights
 VI_DESCRIPTION            Input file description
 ``` 
-## VCS information (only git at this time)
+<a name="versionfn">1</a>: Difference between FileVersion and ProductVersion
+
+## VCS information
+### Git
 ```
 GIT_LAST_COMMIT_HASH_LONG   Last commit hash (long)
 GIT_LAST_COMMIT_HASH_SHORT  Last commit hash (short)
 GIT_LAST_COMMIT_DATE        Last commit date
 GIT_USERNAME                Git username, from git configuration
-GIT_USERMAIL                Get email address, from git configuration
+GIT_USERMAIL                Get email address, from configuration
 ```
-<a name="versionfn">1</a>: Difference between FileVersion and ProductVersion
+### Mercurial
+```
+HG_LAST_COMMIT_HASH_LONG   Last commit hash (long)
+HG_LAST_COMMIT_HASH_SHORT  Last commit hash (short)
+HG_LAST_COMMIT_DATE        Last commit date
+HG_USERNAME                Name and email address, from configuration
+```
 
 # Command line options
 ```
 -i, --input           Required. Input executable or dll file name
 -o, --output          Required. Output file name
--g, --ex-git          (Default: false) Exclude git related information from output
+-s, --ex-vcs          (Default: false) Exclude version control system(s) related information from output
 -c, --ex-common       (Default: false) Exclude common file information from output (size, name, etc.)
 -v, --ex-version      (Default: false) Exclude version information from output
 -p, --prefix          (Default: "") Constants prefix in output script
