@@ -18,7 +18,7 @@ namespace NSISInfoWriter
         public string Prefix { get; set; }
         [Option('e', "ignore-empty", Default = false, HelpText = "Empty values will be rejected from output")]
         public bool IgnoreEmpty { get; set; }
-        [Option('f', "format", Default = "major.minor.build.private", HelpText = "Version information format")]
+        [Option('f', "format", Default = "%mj%.%mi%.%b%.%p%", HelpText = "Version information format")]
         public string Format {get;set; }
     }
 }

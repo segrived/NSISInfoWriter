@@ -30,10 +30,10 @@ namespace NSISInfoWriter
                 privatePart = this.versionInfo.ProductPrivatePart;
             }
             var formattedString = format
-                .Replace("minor",   minorPart.ToString())
-                .Replace("major",   majorPart.ToString())
-                .Replace("build",   buildPart.ToString())
-                .Replace("private", privatePart.ToString());
+                .Replace("%mi%", minorPart.ToString())
+                .Replace("%mj%", majorPart.ToString())
+                .Replace("%b%",  buildPart.ToString())
+                .Replace("%p%",  privatePart.ToString());
             return formattedString;
         }
     }
