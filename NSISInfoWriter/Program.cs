@@ -38,6 +38,7 @@ namespace NSISInfoWriter
                 if (!o.ExcludeGit && Helpers.IsGitAvialable() && Helpers.IsUnderGit(infoParser.WorkingDirectory)) {
                     generator.Add("GIT_LAST_COMMIT_HASH_LONG" , infoParser.GetLastCommitHash(false));
                     generator.Add("GIT_LAST_COMMIT_HASH_SHORT", infoParser.GetLastCommitHash(true));
+                    generator.Add("GIT_LAST_COMMIT_DATE"      , infoParser.GetLastCommitDate());
                     generator.Add("GIT_USERNAME"              , infoParser.GetGitUserName());
                     generator.Add("GIT_USEREMAIL"             , infoParser.GetGitUserEmail());
                 }
