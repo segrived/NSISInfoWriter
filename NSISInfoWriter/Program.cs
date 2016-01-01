@@ -14,9 +14,10 @@ namespace NSISInfoWriter
                 Environment.Exit(1);
             }
 
+
             try {
                 var infoParser = new FileInfoParser(o.InputFile);
-
+                var versionFormatter = new VersionFormatGenerator(infoParser.VersionInfo);
                 // common file information
                 if (! o.ExcludeCommon) {
                     generator.Add("FILE_NAME"                 , infoParser.FileName);
@@ -29,6 +30,8 @@ namespace NSISInfoWriter
                 if (!o.ExcludeVersion) {
                     generator.Add("VI_PRODUCTIONVERSION"      , infoParser.VersionInfo.ProductVersion);
                     generator.Add("VI_FILEVERSION"            , infoParser.VersionInfo.FileVersion);
+                    generator.Add("VI_FMT_PRODUCTIONVERSION"  , versionFormatter.FormatVersion(VersionType.PRODUCT, o.Format));
+                    generator.Add("VI_FMT_FILEVERSION"        , versionFormatter.FormatVersion(VersionType.FILE, o.Format));
                     generator.Add("VI_COPYRIGHTS"             , infoParser.VersionInfo.LegalCopyright);
                     generator.Add("VI_DESCRIPTION"            , infoParser.VersionInfo.FileDescription);
                     generator.Add("VI_COMPANY"                , infoParser.VersionInfo.CompanyName);

@@ -23,7 +23,9 @@ Unprefixed versions
 
 ## Version information
 - **VI_PRODUCTIONVERSION** - Product version <sup>[1](#versionfn)</sup>
-- **VI_FILEVERSION** - Input file version <sup>[1](#versionfn)</sup>
+- **VI_FILEVERSION** - File version <sup>[1](#versionfn)</sup>
+- **VI_FMT_PRODUCTIONVERSION** - Product version (formatted)
+- **VI_FMT_FILEVERSION** - File version (formatted)
 - **VI_COPYRIGHTS** - Input file copyrights
 - **VI_DESCRIPTION** - Input file description
 
@@ -45,6 +47,7 @@ Unprefixed versions
 -v, --ex-version      (Default: false) Exclude version information from output
 -p, --prefix          (Default: "") Constants prefix in output script
 -e, --ignore-empty    (Default: false) Empty values will be rejected from output
+-f, --format          (Default: major.minor.build.private) Version information formation
 --help                Display this help screen.
 --version             Display version information.
 ```
