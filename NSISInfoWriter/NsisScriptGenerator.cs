@@ -34,7 +34,7 @@ namespace NSISInfoWriter
         public void Save() {
             using (var writer = File.CreateText(this.OutputFileName)) {
                 foreach (var kvp in this._definesDict) {
-                    string line = String.Format("!define {0} {1}", kvp.Key, kvp.Value);
+                    string line = String.Format("!define {0} \"{1}\"", kvp.Key, kvp.Value);
                     writer.WriteLine(line);
                 }
             }
