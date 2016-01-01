@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 
 namespace NSISInfoWriter
@@ -7,43 +8,36 @@ namespace NSISInfoWriter
     {
         public string FileName { get; private set; }
 
-        public static bool IsGitAvialable() {
-            var psi = new ProcessStartInfo {
+        public static ProcessStartInfo GetPSI(string command, string args, string wd = null) {
+            if(wd == null) {
+                wd = Environment.CurrentDirectory;
+            }
+            return new ProcessStartInfo {
+                FileName               = command,
+                Arguments              = args,
+                CreateNoWindow         = true,
                 RedirectStandardOutput = true,
-                FileName = "git",
-                Arguments = "--version",
-                CreateNoWindow = true,
-                UseShellExecute = false
+                RedirectStandardError  = true,
+                UseShellExecute        = false,
+                WorkingDirectory       = wd
             };
+        }
+
+
+        public static int GetExitCode(string command, string args, string wd = null) {
             try {
-                var p = Process.Start(psi);
+                var p = Process.Start(GetPSI(command, args, wd));
                 p.WaitForExit();
-                return p.ExitCode == 0;
+                return p.ExitCode;
             } catch (Win32Exception) {
-                return false;
+                return -1; // error code
             }
         }
 
-        public static string GetCommandOutput(string fileName, string arguments, string wd) {
-            var psi = new ProcessStartInfo {
-                FileName = fileName,
-                Arguments = arguments,
-                CreateNoWindow = true,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                UseShellExecute = false,
-                WorkingDirectory = wd
-            };
-            var p = Process.Start(psi);
+        public static string GetCommandOutput(string command, string args, string wd = null) {
+            var p = Process.Start(GetPSI(command, args, wd));
             var output = p.StandardOutput.ReadToEnd();
             return output.Trim();
-        }
-
-        public static bool IsUnderGit(string wd) {
-            // if inside .git directory - false, if directory isn't under git control -
-            // GetCommandOutput will return nothing, because stderr is ignored
-            var res = Helpers.GetCommandOutput("git", "rev-parse --is-inside-work-tree", wd);
-            return res == "true";
         }
 
     }

@@ -9,7 +9,7 @@ namespace NSISInfoWriter
         static void WriteResults(CLIOptions o) {
             var generator = new NsisScriptGenerator(o.OutputFile, o.Prefix, o.IgnoreEmpty);
 
-            if (o.ExcludeCommon && o.ExcludeGit && o.ExcludeVersion) {
+            if (o.ExcludeCommon && o.ExcludeVCS && o.ExcludeVersion) {
                 Console.WriteLine("ERROR: Everything was excluded, nothing to do");
                 Environment.Exit(1);
             }
@@ -20,10 +20,10 @@ namespace NSISInfoWriter
                 var versionFormatter = new VersionFormatGenerator(infoParser.VersionInfo);
                 // common file information
                 if (! o.ExcludeCommon) {
-                    generator.Add("FILE_NAME"                 , infoParser.FileName);
-                    generator.Add("FILE_SIZE"                 , infoParser.FileInfo.Length.ToString());
-                    generator.Add("FILE_SIZE_KB"              , (infoParser.FileInfo.Length / 1024).ToString());
-                    generator.Add("FILE_SIZE_MB",               (infoParser.FileInfo.Length / 1048576).ToString());
+                    generator.Add("FILE_NAME"     , infoParser.FileName);
+                    generator.Add("FILE_SIZE"     , infoParser.FileInfo.Length.ToString());
+                    generator.Add("FILE_SIZE_KB"  , (infoParser.FileInfo.Length / 1024).ToString());
+                    generator.Add("FILE_SIZE_MB"  , (infoParser.FileInfo.Length / 1048576).ToString());
                 }
 
                 // version file information
@@ -37,13 +37,20 @@ namespace NSISInfoWriter
                     generator.Add("VI_COMPANY"                , infoParser.VersionInfo.CompanyName);
                 }
 
-                // git related information
-                if (!o.ExcludeGit && Helpers.IsGitAvialable() && Helpers.IsUnderGit(infoParser.WorkingDirectory)) {
-                    generator.Add("GIT_LAST_COMMIT_HASH_LONG" , infoParser.GetLastCommitHash(false));
-                    generator.Add("GIT_LAST_COMMIT_HASH_SHORT", infoParser.GetLastCommitHash(true));
-                    generator.Add("GIT_LAST_COMMIT_DATE"      , infoParser.GetLastCommitDate());
-                    generator.Add("GIT_USERNAME"              , infoParser.GetGitUserName());
-                    generator.Add("GIT_USEREMAIL"             , infoParser.GetGitUserEmail());
+                if(! o.ExcludeVCS) {
+                    var inputDir = Path.GetDirectoryName(o.InputFile);
+                    
+                    // git related information
+                    var git = new VCSInformationParser.GitParser(inputDir);
+                    if (git.IsAvailableVCSExecutable() && git.IsUnderControl()) {
+                        generator.AddRange(git.GetInformation());
+                    }
+
+                    // mercurial related information
+                    var hg = new VCSInformationParser.MercurialParser(inputDir);
+                    if (hg.IsAvailableVCSExecutable() && hg.IsUnderControl()) {
+                        generator.AddRange(hg.GetInformation());
+                    }
                 }
 
                 generator.Save();

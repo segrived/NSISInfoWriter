@@ -8,8 +8,8 @@ namespace NSISInfoWriter
         public string InputFile { get; set; }
         [Option('o', "output", Required = true, HelpText = "Output file")]
         public string OutputFile { get; set; }
-        [Option('g', "ex-git", Default = false, HelpText = "Exclude git related information from output")]
-        public bool ExcludeGit { get; set; }
+        [Option('s', "ex-vcs", Default = false, HelpText = "Exclude version control system(s) related information from output")]
+        public bool ExcludeVCS { get; set; }
         [Option('c', "ex-common", Default = false, HelpText = "Exclude common file information from output (size, name, etc.)")]
         public bool ExcludeCommon { get; set; }
         [Option('v', "ex-version", Default = false, HelpText = "Exclude version information from output")]

@@ -53,11 +53,11 @@ GIT_USERMAIL                Get email address, from git configuration
 -e, --ignore-empty    (Default: false) Empty values will be rejected from output
 -f, --format          (Default: %mj%.%mi%.%b%.%p%) Version information formation
 	Available placeholders:
-	%mj% - Major version part
-	%mi% - ninor version part
-    %b%  - build version part
-    %p%  - private version part
-    Example: "v%mj%.%mi% (build %b%)"
+	%mj% - major version part
+	%mi% - minor version part
+	%b%  - build version part
+	%p%  - private version part
+	Example: "v%mj%.%mi% (build %b%)" => v2.7 (build 123)
 --help                Display this help screen.
 --version             Display version information.
 ```

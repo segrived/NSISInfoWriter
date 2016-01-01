@@ -30,6 +30,12 @@ namespace NSISInfoWriter
             this.definesDict.Add(key, value);
         }
 
+        public void AddRange(Dictionary<string, string> dict) {
+            foreach (var kvp in dict) {
+                this.definesDict.Add(kvp.Key, kvp.Value);
+            }
+        }
+
         public void Save() {
             using (var writer = File.CreateText(this.OutputFileName)) {
                 foreach (var kvp in this.definesDict) {
