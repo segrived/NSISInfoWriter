@@ -1,5 +1,7 @@
 # NSISInfoWriter #
 
+[![Build status](https://ci.appveyor.com/api/projects/status/iv8ty8mctn0r5q6s?svg=true)](https://ci.appveyor.com/project/segrived/nsisinfowriter)
+
 ## Usage
 Just add something like this into your NSIS install script:
 ```nsis
