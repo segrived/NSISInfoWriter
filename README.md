@@ -32,7 +32,7 @@ VI_FMT_FILEVERSION        File version (formatted)
 VI_COPYRIGHTS             Input file copyrights
 VI_DESCRIPTION            Input file description
 ``` 
-## VCS information (only git at the moment)
+## VCS information (only git at this time)
 ```
 GIT_LAST_COMMIT_HASH_LONG   Last commit hash (long)
 GIT_LAST_COMMIT_HASH_SHORT  Last commit hash (short)
@@ -52,6 +52,12 @@ GIT_USERMAIL                Get email address, from git configuration
 -p, --prefix          (Default: "") Constants prefix in output script
 -e, --ignore-empty    (Default: false) Empty values will be rejected from output
 -f, --format          (Default: %mj%.%mi%.%b%.%p%) Version information formation
+	Available placeholders:
+	%mj% - Major version part
+	%mi% - ninor version part
+    %b%  - build version part
+    %p%  - private version part
+    Example: "v%mj%.%mi% (build %b%)"
 --help                Display this help screen.
 --version             Display version information.
 ```
