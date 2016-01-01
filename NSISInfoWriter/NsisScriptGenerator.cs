@@ -10,14 +10,13 @@ namespace NSISInfoWriter
         public string Prefix { get; private set; }
         public bool IgnoreEmpty { get; private set; }
 
-        private Dictionary<string, string> _definesDict;
+        private readonly Dictionary<string, string> definesDict;
 
         public NsisScriptGenerator(string outputFileName, string prefix, bool ignoreEmpty) {
             this.OutputFileName = outputFileName;
             this.Prefix = prefix;
             this.IgnoreEmpty = ignoreEmpty;
-
-            this._definesDict = new Dictionary<string, string>();
+            this.definesDict = new Dictionary<string, string>();
         }
 
         public void Add(string key, string value) {
@@ -28,12 +27,12 @@ namespace NSISInfoWriter
                 key = String.Format("{0}_{1}", Prefix, key);
             }
             key = key.ToUpperInvariant();
-            this._definesDict.Add(key, value);
+            this.definesDict.Add(key, value);
         }
 
         public void Save() {
             using (var writer = File.CreateText(this.OutputFileName)) {
-                foreach (var kvp in this._definesDict) {
+                foreach (var kvp in this.definesDict) {
                     string line = String.Format("!define {0} \"{1}\"", kvp.Key, kvp.Value);
                     writer.WriteLine(line);
                 }
