@@ -70,6 +70,8 @@ SVN_REPO_URL               Repository URL
 -c, --ex-common       (Default: false) Exclude common file information from output (size, name, etc.)
 -v, --ex-version      (Default: false) Exclude version information from output
 -p, --prefix          (Default: "") Constants prefix in output script
+-r, --repo-path       (Default: "") Path to VCS repository
+                      If not specified, input file directory will be used instead
 -e, --ignore-empty    (Default: false) Empty values will be rejected from output
 -f, --format          (Default: %mj%.%mi%.%b%.%p%) Version information formation
                       Available placeholders:

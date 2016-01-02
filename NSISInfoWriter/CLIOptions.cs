@@ -15,7 +15,9 @@ namespace NSISInfoWriter
         [Option('v', "ex-version", Default = false, HelpText = "Exclude version information from output")]
         public bool ExcludeVersion { get; set; }
         [Option('p', "prefix", Default = "", HelpText = "Constants prefix in output script")]
-        public string Prefix { get; set; }
+        public string Prefix { get; set; } 
+        [Option('r', "repo-path", Default = "", HelpText = "Path to VCS repository")]
+        public string RepoPath { get; set; }
         [Option('e', "ignore-empty", Default = false, HelpText = "Empty values will be rejected from output")]
         public bool IgnoreEmpty { get; set; }
         [Option('f', "format", Default = "%mj%.%mi%.%b%.%p%", HelpText = "Version information format")]

@@ -14,7 +14,6 @@ namespace NSISInfoWriter
                 Environment.Exit(1);
             }
 
-
             try {
                 var infoParser = new FileInfoParser(o.InputFile);
                 var versionFormatter = new VersionFormatGenerator(infoParser.VersionInfo);
@@ -43,23 +42,26 @@ namespace NSISInfoWriter
                     generator.Add("VI_COMPANY"                , infoParser.VersionInfo.CompanyName);
                 }
 
-                if(! o.ExcludeVCS) {
-                    var inputDir = Path.GetDirectoryName(o.InputFile);
+                var repoPath = String.IsNullOrEmpty(o.RepoPath)
+                    ? Path.GetDirectoryName(o.InputFile)
+                    : o.RepoPath;
+
+                if ((!o.ExcludeVCS) && Directory.Exists(repoPath)) {
                     
                     // git related information
-                    var git = new VCSInformationParser.GitParser(inputDir);
+                    var git = new VCSInformationParser.GitParser(repoPath);
                     if (git.IsAvailableVCSExecutable() && git.IsUnderControl()) {
                         generator.AddRange(git.GetInformation());
                     }
 
                     // mercurial related information
-                    var hg = new VCSInformationParser.MercurialParser(inputDir);
+                    var hg = new VCSInformationParser.MercurialParser(repoPath);
                     if (hg.IsAvailableVCSExecutable() && hg.IsUnderControl()) {
                         generator.AddRange(hg.GetInformation());
                     }
 
                     // mercurial related information
-                    var svn = new VCSInformationParser.SubversionParser(inputDir);
+                    var svn = new VCSInformationParser.SubversionParser(repoPath);
                     if (svn.IsAvailableVCSExecutable() && svn.IsUnderControl()) {
                         generator.AddRange(svn.GetInformation());
                     }
