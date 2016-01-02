@@ -17,6 +17,9 @@ namespace NSISInfoWriter
             try {
                 var infoParser = new FileInfoParser(o.InputFile);
                 var versionFormatter = new VersionFormatGenerator(infoParser.VersionInfo);
+
+                generator.Add("SCRIPT_GENERATE_TIME", DateTime.Now.ToString());
+
                 // common file information
                 if (! o.ExcludeCommon) {
                     generator.Add("FILE_NAME"           , infoParser.FileName);
