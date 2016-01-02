@@ -13,9 +13,12 @@ Just add something like this into your NSIS install script:
 
 # Available constants in output file
 
-Unprefixed versions
+## Global information (always includes)
+```
+SCRIPT_GENERATE_TIME   Script generation time
+```
 
-## Common file information
+## Common file information (can be excluded by -c)
 ```
 FILE_NAME     Input file name
 FILE_SIZE     File size in bytes
@@ -25,7 +28,7 @@ FILE_ARCH     Target architecture (possible values: x86 and x64)
               Will not written to output if invalid PE image
 ```
 
-## Version information
+## Version information (can be excluded by -v)
 ```
 VI_PRODUCTIONVERSION        Product version <sup>[1](#versionfn)</sup>
 VI_FILEVERSION              File version <sup>[1](#versionfn)</sup>
@@ -36,7 +39,7 @@ VI_DESCRIPTION              Input file description
 ```
 <a name="versionfn">1</a>: Difference between FileVersion and ProductVersion
 
-## VCS information
+## VCS information  (can be excluded by -s)
 
 ### Git
 ```
@@ -73,13 +76,14 @@ SVN_REPO_URL               Repository URL
 -r, --repo-path       (Default: "") Path to VCS repository
                       If not specified, input file directory will be used instead
 -e, --ignore-empty    (Default: false) Empty values will be rejected from output
--f, --format          (Default: %mj%.%mi%.%b%.%p%) Version information formation
+-f, --version-format  (Default: %mj%.%mi%.%b%.%p%) Version information formation
                       Available placeholders:
                       %mj% - major version part
                       %mi% - minor version part
                       %b%  - build version part
                       %p%  - private version part
                       Example: "v%mj%.%mi% (build %b%)" => v2.7 (build 123)
+-d, --date-format     (Default: yyyyMMddHHmmss) Date/time format
 --help                Display this help screen.
 --version             Display version information.
 ```

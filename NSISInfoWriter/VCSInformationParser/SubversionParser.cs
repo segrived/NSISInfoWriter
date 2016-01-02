@@ -1,8 +1,10 @@
-﻿namespace NSISInfoWriter.VCSInformationParser
+﻿using System;
+
+namespace NSISInfoWriter.VCSInformationParser
 {
     class SubversionParser : VCSInfoParser
     {
-        public SubversionParser(string wd) : base("svn", wd) { }
+        public SubversionParser(string wd, string timeFormat) : base("svn", wd, timeFormat) { }
 
         public override string Prefix { get; } = "SVN";
 
@@ -12,7 +14,8 @@
         }
 
         private string GetLastRevisionDate() {
-            return this.CmdOutput("info --show-item last-changed-date");
+            var unformatted = this.CmdOutput("info --show-item last-changed-date");
+            return DateTime.Parse(unformatted).ToString(this.timeFormat);
         }
 
         private string GetURL() {

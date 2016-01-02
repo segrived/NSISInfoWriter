@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace NSISInfoWriter.VCSInformationParser
 {
@@ -6,7 +7,7 @@ namespace NSISInfoWriter.VCSInformationParser
     {
         public override string Prefix {get; } = "GIT";
 
-        public GitParser(string wd) : base("git", wd) { }
+        public GitParser(string wd, string timeFormat) : base("git", wd, timeFormat) { }
 
         public override bool IsUnderControl() {
             // if inside .git directory - false, if directory isn't under git control -
@@ -21,7 +22,8 @@ namespace NSISInfoWriter.VCSInformationParser
         }
 
         private string GetLastCommitDate() {
-            return this.CmdOutput("log --pretty=format:%ai -n 1");
+            var unformatted = this.CmdOutput("log --pretty=format:%ai -n 1");
+            return DateTime.Parse(unformatted).ToString(this.timeFormat);
         }
 
         private string GetUserName() {

@@ -20,7 +20,9 @@ namespace NSISInfoWriter
         public string RepoPath { get; set; }
         [Option('e', "ignore-empty", Default = false, HelpText = "Empty values will be rejected from output")]
         public bool IgnoreEmpty { get; set; }
-        [Option('f', "format", Default = "%mj%.%mi%.%b%.%p%", HelpText = "Version information format")]
-        public string Format {get;set; }
+        [Option('f', "version-format", Default = "%mj%.%mi%.%b%.%p%", HelpText = "Version information format")]
+        public string VersionFormat {get; set; }
+        [Option('d', "date-format", Default = "yyyyMMddHHmmss", HelpText = "Date/time format")]
+        public string DateFormat { get; set; }
     }
 }

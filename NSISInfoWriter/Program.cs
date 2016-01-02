@@ -18,7 +18,7 @@ namespace NSISInfoWriter
                 var infoParser = new FileInfoParser(o.InputFile);
                 var versionFormatter = new VersionFormatGenerator(infoParser.VersionInfo);
 
-                generator.Add("SCRIPT_GENERATE_TIME", DateTime.Now.ToString());
+                generator.Add("SCRIPT_GENERATE_TIME", DateTime.Now.ToString(o.DateFormat));
 
                 // common file information
                 if (! o.ExcludeCommon) {
@@ -26,8 +26,8 @@ namespace NSISInfoWriter
                     generator.Add("FILE_SIZE"           , infoParser.FileInfo.Length.ToString());
                     generator.Add("FILE_SIZE_KB"        , (infoParser.FileInfo.Length / 1024).ToString());
                     generator.Add("FILE_SIZE_MB"        , (infoParser.FileInfo.Length / 1048576).ToString());
-                    generator.Add("FILE_CREATION_DATE"  , infoParser.FileInfo.CreationTime.ToString());
-                    generator.Add("FILE_LAST_WRITE_TIME", infoParser.FileInfo.LastWriteTime.ToString());
+                    generator.Add("FILE_CREATION_DATE"  , infoParser.FileInfo.CreationTime.ToString(o.DateFormat));
+                    generator.Add("FILE_LAST_WRITE_TIME", infoParser.FileInfo.LastWriteTime.ToString(o.DateFormat));
                     try {
                         var arch = Helpers.GetImageArchitecture(infoParser.FileName);
                         generator.Add("FILE_ARCH", Helpers.ImageArchitectureToString(arch));
@@ -38,8 +38,8 @@ namespace NSISInfoWriter
                 if (!o.ExcludeVersion) {
                     generator.Add("VI_PRODUCTIONVERSION"      , infoParser.VersionInfo.ProductVersion);
                     generator.Add("VI_FILEVERSION"            , infoParser.VersionInfo.FileVersion);
-                    generator.Add("VI_FMT_PRODUCTIONVERSION"  , versionFormatter.FormatVersion(VersionType.PRODUCT, o.Format));
-                    generator.Add("VI_FMT_FILEVERSION"        , versionFormatter.FormatVersion(VersionType.FILE, o.Format));
+                    generator.Add("VI_FMT_PRODUCTIONVERSION"  , versionFormatter.FormatVersion(VersionType.PRODUCT, o.VersionFormat));
+                    generator.Add("VI_FMT_FILEVERSION"        , versionFormatter.FormatVersion(VersionType.FILE, o.VersionFormat));
                     generator.Add("VI_COPYRIGHTS"             , infoParser.VersionInfo.LegalCopyright);
                     generator.Add("VI_DESCRIPTION"            , infoParser.VersionInfo.FileDescription);
                     generator.Add("VI_COMPANY"                , infoParser.VersionInfo.CompanyName);
@@ -52,19 +52,19 @@ namespace NSISInfoWriter
                 if ((!o.ExcludeVCS) && Directory.Exists(repoPath)) {
                     
                     // git related information
-                    var git = new VCSInformationParser.GitParser(repoPath);
+                    var git = new VCSInformationParser.GitParser(repoPath, o.DateFormat);
                     if (git.IsAvailableVCSExecutable() && git.IsUnderControl()) {
                         generator.AddRange(git.GetInformation());
                     }
 
                     // mercurial related information
-                    var hg = new VCSInformationParser.MercurialParser(repoPath);
+                    var hg = new VCSInformationParser.MercurialParser(repoPath, o.DateFormat);
                     if (hg.IsAvailableVCSExecutable() && hg.IsUnderControl()) {
                         generator.AddRange(hg.GetInformation());
                     }
 
                     // subversion related information
-                    var svn = new VCSInformationParser.SubversionParser(repoPath);
+                    var svn = new VCSInformationParser.SubversionParser(repoPath, o.DateFormat);
                     if (svn.IsAvailableVCSExecutable() && svn.IsUnderControl()) {
                         generator.AddRange(svn.GetInformation());
                     }

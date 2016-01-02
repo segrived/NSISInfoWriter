@@ -8,13 +8,15 @@ namespace NSISInfoWriter.VCSInformationParser
     public abstract class VCSInfoParser
     {
         protected string workingDirectory;
+        protected string timeFormat;
         private string vcsExec;
 
         protected Dictionary<string, string> generated = new Dictionary<string, string>();
 
-        public VCSInfoParser(string vcsExec, string wd) {
+        public VCSInfoParser(string vcsExec, string wd, string timeFormat) {
             this.vcsExec = vcsExec;
             this.workingDirectory = wd;
+            this.timeFormat = timeFormat;
         }
 
         protected string CmdOutput(string args) {
