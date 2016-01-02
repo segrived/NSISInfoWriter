@@ -20,7 +20,7 @@ namespace NSISInfoWriter
         }
 
         public void Add(string key, string value) {
-            if (this.IgnoreEmpty && String.IsNullOrWhiteSpace(value)) {
+            if (this.IgnoreEmpty || String.IsNullOrWhiteSpace(value)) {
                 return;
             }
             if (!String.IsNullOrWhiteSpace(this.Prefix)) {
