@@ -20,10 +20,12 @@ namespace NSISInfoWriter
                 var versionFormatter = new VersionFormatGenerator(infoParser.VersionInfo);
                 // common file information
                 if (! o.ExcludeCommon) {
-                    generator.Add("FILE_NAME"     , infoParser.FileName);
-                    generator.Add("FILE_SIZE"     , infoParser.FileInfo.Length.ToString());
-                    generator.Add("FILE_SIZE_KB"  , (infoParser.FileInfo.Length / 1024).ToString());
-                    generator.Add("FILE_SIZE_MB"  , (infoParser.FileInfo.Length / 1048576).ToString());
+                    generator.Add("FILE_NAME"           , infoParser.FileName);
+                    generator.Add("FILE_SIZE"           , infoParser.FileInfo.Length.ToString());
+                    generator.Add("FILE_SIZE_KB"        , (infoParser.FileInfo.Length / 1024).ToString());
+                    generator.Add("FILE_SIZE_MB"        , (infoParser.FileInfo.Length / 1048576).ToString());
+                    generator.Add("FILE_CREATION_DATE"  , infoParser.FileInfo.CreationTime.ToString());
+                    generator.Add("FILE_LAST_WRITE_TIME", infoParser.FileInfo.LastWriteTime.ToString());
                 }
 
                 // version file information
