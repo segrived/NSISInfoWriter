@@ -26,6 +26,10 @@ namespace NSISInfoWriter
                     generator.Add("FILE_SIZE_MB"        , (infoParser.FileInfo.Length / 1048576).ToString());
                     generator.Add("FILE_CREATION_DATE"  , infoParser.FileInfo.CreationTime.ToString());
                     generator.Add("FILE_LAST_WRITE_TIME", infoParser.FileInfo.LastWriteTime.ToString());
+                    try {
+                        var arch = Helpers.GetImageArchitecture(infoParser.FileName);
+                        generator.Add("FILE_ARCH", Helpers.ImageArchitectureToString(arch));
+                    } catch (BadImageFormatException) { }
                 }
 
                 // version file information
