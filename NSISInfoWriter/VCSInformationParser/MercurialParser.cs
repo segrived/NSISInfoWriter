@@ -8,7 +8,7 @@ namespace NSISInfoWriter.VCSInformationParser
 {
     public class MercurialParser : VCSInfoParser
     {
-        public MercurialParser(string workingDirectory) : base("hg", workingDirectory) { }
+        public MercurialParser(string wd) : base("hg", wd) { }
 
         public override string Prefix { get; } = "HG";
 

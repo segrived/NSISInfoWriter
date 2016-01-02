@@ -2,7 +2,7 @@
 {
     class SubversionParser : VCSInfoParser
     {
-        public SubversionParser(string workingDirectory) : base("svn", workingDirectory) { }
+        public SubversionParser(string wd) : base("svn", wd) { }
 
         public override string Prefix { get; } = "SVN";
 

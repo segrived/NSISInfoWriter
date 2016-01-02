@@ -12,9 +12,9 @@ namespace NSISInfoWriter.VCSInformationParser
 
         protected Dictionary<string, string> generated = new Dictionary<string, string>();
 
-        public VCSInfoParser(string vcsExec, string workingDirectory) {
+        public VCSInfoParser(string vcsExec, string wd) {
             this.vcsExec = vcsExec;
-            this.workingDirectory = workingDirectory;
+            this.workingDirectory = wd;
         }
 
         protected string CmdOutput(string args) {

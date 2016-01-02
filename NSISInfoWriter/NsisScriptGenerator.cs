@@ -39,7 +39,10 @@ namespace NSISInfoWriter
         public void Save() {
             using (var writer = File.CreateText(this.OutputFileName)) {
                 foreach (var kvp in this.definesDict) {
-                    string line = String.Format("!define {0} \"{1}\"", kvp.Key, kvp.Value);
+                    // escaping quotes (based on http://nsis.sourceforge.net/Docs/Chapter4.html)
+                    // looks ugly, but anyway
+                    string value = kvp.Value.Replace(@"""", @"$\""");
+                    string line = String.Format("!define {0} \"{1}\"", kvp.Key, value);
                     writer.WriteLine(line);
                 }
             }

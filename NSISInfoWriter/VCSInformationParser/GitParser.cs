@@ -6,7 +6,7 @@ namespace NSISInfoWriter.VCSInformationParser
     {
         public override string Prefix {get; } = "GIT";
 
-        public GitParser(string workingDirectory) : base("git", workingDirectory) { }
+        public GitParser(string wd) : base("git", wd) { }
 
         public override bool IsUnderControl() {
             // if inside .git directory - false, if directory isn't under git control -

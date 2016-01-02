@@ -7,12 +7,12 @@ namespace NSISInfoWriter
     class Program
     {
         static void WriteResults(CLIOptions o) {
-            var generator = new NsisScriptGenerator(o.OutputFile, o.Prefix, o.IgnoreEmpty);
-
             if (o.ExcludeCommon && o.ExcludeVCS && o.ExcludeVersion) {
                 Console.WriteLine("ERROR: Everything was excluded, nothing to do");
                 Environment.Exit(1);
             }
+
+            var generator = new NsisScriptGenerator(o.OutputFile, o.Prefix, o.IgnoreEmpty);
 
             try {
                 var infoParser = new FileInfoParser(o.InputFile);
@@ -60,7 +60,7 @@ namespace NSISInfoWriter
                         generator.AddRange(hg.GetInformation());
                     }
 
-                    // mercurial related information
+                    // subversion related information
                     var svn = new VCSInformationParser.SubversionParser(repoPath);
                     if (svn.IsAvailableVCSExecutable() && svn.IsUnderControl()) {
                         generator.AddRange(svn.GetInformation());
