@@ -10,21 +10,21 @@ namespace NSISInfoWriter.VCSInformationParser
 
         private string GetLastCommitHash(bool isShort = true) {
             var command = isShort ? "parent --template {node|short}" : "parent --template {node}";
-            return this.CmdOutput(command);
+            return this.cmdProcessor.GetCommandOutput(command);
         }
 
         private string GetLastCommitDate() {
-            var unformatted = this.CmdOutput("log --template {date|isodatesec} -l 1");
+            var unformatted = this.cmdProcessor.GetCommandOutput("log --template {date|isodatesec} -l 1");
             return DateTime.Parse(unformatted).ToString(this.timeFormat);
         }
 
         private string GetUserName() {
-            return this.CmdOutput("showconfig ui.username");
+            return this.cmdProcessor.GetCommandOutput("showconfig ui.username");
         }
 
 
         public override bool IsUnderControl() {
-            var res = Helpers.GetExitCode("hg", "--cwd . root", this.workingDirectory);
+            var res = this.cmdProcessor.GetExitCode("--cwd . root");
             return res == 0;
         }
 

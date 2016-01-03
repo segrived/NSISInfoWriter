@@ -7,6 +7,7 @@ namespace NSISInfoWriter.VCSInformationParser
         protected string workingDirectory;
         protected string timeFormat;
         private string vcsExec;
+        protected CommandProcessor cmdProcessor;
 
         protected Dictionary<string, string> generated = new Dictionary<string, string>();
 
@@ -14,17 +15,14 @@ namespace NSISInfoWriter.VCSInformationParser
             this.vcsExec = vcsExec;
             this.workingDirectory = wd;
             this.timeFormat = timeFormat;
+            this.cmdProcessor = new CommandProcessor(vcsExec, wd);
         }
-
-        protected string CmdOutput(string args) {
-            return Helpers.GetCommandOutput(this.vcsExec, args, this.workingDirectory);
-        }
-
+    
         abstract public string Prefix {get; }
 
         virtual public bool IsAvailableVCSExecutable()
         {
-            int code = Helpers.GetExitCode(this.vcsExec, "--version");
+            int code = this.cmdProcessor.GetExitCode("--version");
             return code == 0;
         }
 

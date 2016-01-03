@@ -9,21 +9,21 @@ namespace NSISInfoWriter.VCSInformationParser
         public override string Prefix { get; } = "SVN";
 
         public override bool IsUnderControl() {
-            var res = Helpers.GetExitCode("svn", "info", this.workingDirectory);
+            var res = this.cmdProcessor.GetExitCode("info");
             return res == 0;
         }
 
         private string GetLastRevisionDate() {
-            var unformatted = this.CmdOutput("info --show-item last-changed-date");
+            var unformatted = this.cmdProcessor.GetCommandOutput("info --show-item last-changed-date");
             return DateTime.Parse(unformatted).ToString(this.timeFormat);
         }
 
         private string GetURL() {
-            return this.CmdOutput("info --show-item url");
+            return this.cmdProcessor.GetCommandOutput("info --show-item url");
         }
 
         private string GetLastRevisionNumber() {
-            return this.CmdOutput("info --show-item revision");
+            return this.cmdProcessor.GetCommandOutput("info --show-item revision");
         }
 
         protected override void ParseInformation() {

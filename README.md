@@ -20,12 +20,12 @@ SCRIPT_GENERATE_TIME   Script generation time
 
 ### Common file information (can be excluded by -c)
 ```
-FILE_NAME     Input file name
-FILE_SIZE     File size in bytes
-FILE_SIZE_KB  File size in kilobytes
-FILE_SIZE_MB  File size in megabytes
-FILE_ARCH     Target architecture (possible values: x86 and x64)
-              Will not written to output if invalid PE image
+FILE_NAME          Input file name
+FILE_SIZE          File size in bytes
+FILE_SIZE_KB       File size in kilobytes
+FILE_SIZE_MB       File size in megabytes
+FILE_ARCHITECTURE  Target architecture (possible values: x86 and x64)
+                   Will not written to output if invalid PE image
 ```
 
 ### Version information (can be excluded by -v)

@@ -35,7 +35,7 @@ namespace NSISInfoWriter
 
         public void AddRange(Dictionary<string, string> dict) {
             foreach (var kvp in dict) {
-                this.definesDict.Add(kvp.Key, kvp.Value);
+                this.Add(kvp.Key, kvp.Value);
             }
         }
 
