@@ -6,10 +6,16 @@ namespace NSISInfoWriter
 {
     class Program
     {
+        public const string DefaultOutputFileExt = "nsh";
+
         static void WriteResults(CLIOptions o) {
             if (o.ExcludeCommon && o.ExcludeVCS && o.ExcludeVersion) {
                 Console.WriteLine("ERROR: Everything was excluded, nothing to do");
                 Environment.Exit(1);
+            }
+
+            if(! Path.HasExtension(o.OutputFile)) {
+                o.OutputFile = String.Format("{0}.{1}", o.OutputFile, DefaultOutputFileExt);
             }
 
             var generator = new NsisScriptGenerator(o.OutputFile, o.Prefix, o.IgnoreEmpty);
