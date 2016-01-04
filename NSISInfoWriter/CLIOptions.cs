@@ -7,7 +7,7 @@ namespace NSISInfoWriter
         [Option('i', "input", Required = true, HelpText = "Input executable file")]
         public string InputFile { get; set; }
 
-        [Option('o', "output", Required = true, HelpText = "Output file")]
+        [Option('o', "output", Default = "STDOUT", HelpText = "Output file")]
         public string OutputFile { get; set; }
 
         [Option('s', "ex-vcs", Default = false, HelpText = "Exclude version control system(s) related information from output")]

@@ -60,7 +60,10 @@
     <Compile Include="CommandProcessor.cs" />
     <Compile Include="CommonInfoGenerator.cs" />
     <Compile Include="Helpers.cs" />
-    <Compile Include="NsisScriptGenerator.cs" />
+    <Compile Include="OutputGenerator\ConsoleWriter.cs" />
+    <Compile Include="OutputGenerator\FileWriter.cs" />
+    <Compile Include="OutputGenerator\IScriptWriter.cs" />
+    <Compile Include="OutputGenerator\NsisScriptWriter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VCSInformationParser\GitParser.cs" />

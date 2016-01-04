@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using CommandLine;
+using NSISInfoWriter.OutputGenerator;
 
 namespace NSISInfoWriter
 {
@@ -18,11 +19,15 @@ namespace NSISInfoWriter
                 Console.WriteLine("ERROR: Input file does not exist");
             }
 
-            if(! Path.HasExtension(o.OutputFile)) {
+            var writer = o.OutputFile.Equals("stdout", StringComparison.OrdinalIgnoreCase)
+                ? (IScriptWriter)new ConsoleWriter()
+                : (IScriptWriter)new FileWriter(o.OutputFile);
+
+            if (!Path.HasExtension(o.OutputFile)) {
                 o.OutputFile = String.Format("{0}.{1}", o.OutputFile, DefaultOutputFileExt);
             }
 
-            var generator = new NsisScriptGenerator(o.OutputFile, o.Prefix, o.IgnoreEmpty);
+            var generator = new NsisScriptWriter(writer, o.Prefix, o.IgnoreEmpty);
 
             try {
                 generator.Add("SCRIPT_GENERATE_TIME", DateTime.Now.ToString(o.DateFormat));
