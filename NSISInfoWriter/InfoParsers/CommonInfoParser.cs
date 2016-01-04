@@ -2,23 +2,23 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace NSISInfoWriter
+namespace NSISInfoWriter.InfoParsers
 {
     public enum FileSizeInformationUnit : long
     {
-        B = 1L,
+        B  = 1L,
         KB = 1024L,
         MB = 1048576L,
         GB = 1073741824L
     }
 
-    public class CommonInfoGenerator
+    public class CommonInfoParser
     {
         public string FileName { get; private set; }
         public FileInfo FileInformation { get; private set; }
         public string DateFormat { get; private set; }
 
-        public CommonInfoGenerator(string fileName, string dateFormat) {
+        public CommonInfoParser(string fileName, string dateFormat) {
             this.FileName = fileName;
             this.FileInformation = new FileInfo(fileName);
         }

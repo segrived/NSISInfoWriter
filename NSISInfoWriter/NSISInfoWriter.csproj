@@ -31,6 +31,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -40,6 +41,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommandLine, Version=2.0.275.0, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
@@ -58,7 +60,7 @@
   <ItemGroup>
     <Compile Include="CLIOptions.cs" />
     <Compile Include="CommandProcessor.cs" />
-    <Compile Include="CommonInfoGenerator.cs" />
+    <Compile Include="InfoParsers\CommonInfoParser.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="OutputGenerator\ConsoleWriter.cs" />
     <Compile Include="OutputGenerator\FileWriter.cs" />
@@ -66,11 +68,11 @@
     <Compile Include="OutputGenerator\NsisScriptWriter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VCSInformationParser\GitParser.cs" />
-    <Compile Include="VCSInformationParser\MercurialParser.cs" />
-    <Compile Include="VCSInformationParser\SubversionParser.cs" />
-    <Compile Include="VCSInformationParser\VCSInfoParser.cs" />
-    <Compile Include="VersionInfoGenerator.cs" />
+    <Compile Include="InfoParsers\VCS\GitParser.cs" />
+    <Compile Include="InfoParsers\VCS\MercurialParser.cs" />
+    <Compile Include="InfoParsers\VCS\SubversionParser.cs" />
+    <Compile Include="InfoParsers\VCSInfoParser.cs" />
+    <Compile Include="InfoParsers\VersionInfoParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

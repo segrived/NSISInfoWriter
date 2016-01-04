@@ -2,6 +2,8 @@
 using System.IO;
 using CommandLine;
 using NSISInfoWriter.OutputGenerator;
+using NSISInfoWriter.InfoParsers;
+using NSISInfoWriter.InfoParsers.VCS;
 
 namespace NSISInfoWriter
 {
@@ -15,7 +17,9 @@ namespace NSISInfoWriter
                 Environment.Exit(1);
             }
 
-            if (!File.Exists(o.InputFile)) {
+            var fullFileName = new FileInfo(o.InputFile).FullName;
+
+            if (! File.Exists(fullFileName)) {
                 Console.WriteLine("ERROR: Input file does not exist");
             }
 
@@ -33,37 +37,37 @@ namespace NSISInfoWriter
                 generator.Add("SCRIPT_GENERATE_TIME", DateTime.Now.ToString(o.DateFormat));
 
                 // common file information
-                if (! o.ExcludeCommon) {
-                    var commonInfo = new CommonInfoGenerator(o.InputFile, o.DateFormat);
+                if (!o.ExcludeCommon) {
+                    var commonInfo = new CommonInfoParser(fullFileName, o.DateFormat);
                     generator.AddRange(commonInfo.Generate());
                 }
 
                 // version file information
                 if (!o.ExcludeVersion) {
-                    var versionInfo = new VersionInfoGenerator(o.InputFile, o.VersionFormat);
+                    var versionInfo = new VersionInfoParser(fullFileName, o.VersionFormat);
                     generator.AddRange(versionInfo.Generate());
                 }
 
                 var repoPath = String.IsNullOrEmpty(o.RepoPath)
-                    ? Path.GetDirectoryName(o.InputFile)
+                    ? Path.GetDirectoryName(fullFileName)
                     : o.RepoPath;
 
                 if ((!o.ExcludeVCS) && Directory.Exists(repoPath)) {
-                    
+
                     // git related information
-                    var git = new VCSInformationParser.GitParser(repoPath, o.DateFormat);
+                    var git = new GitParser(repoPath, o.DateFormat);
                     if (git.IsAvailableVCSExecutable() && git.IsUnderControl()) {
                         generator.AddRange(git.GetInformation());
                     }
 
                     // mercurial related information
-                    var hg = new VCSInformationParser.MercurialParser(repoPath, o.DateFormat);
+                    var hg = new MercurialParser(repoPath, o.DateFormat);
                     if (hg.IsAvailableVCSExecutable() && hg.IsUnderControl()) {
                         generator.AddRange(hg.GetInformation());
                     }
 
                     // subversion related information
-                    var svn = new VCSInformationParser.SubversionParser(repoPath, o.DateFormat);
+                    var svn = new SubversionParser(repoPath, o.DateFormat);
                     if (svn.IsAvailableVCSExecutable() && svn.IsUnderControl()) {
                         generator.AddRange(svn.GetInformation());
                     }
@@ -74,6 +78,8 @@ namespace NSISInfoWriter
             } catch (FileNotFoundException) {
                 Console.WriteLine($"File not found: {o.InputFile}, exiting");
             } catch (IOException ex) {
+                Console.WriteLine($"IOExeption: {ex.ToString()}, exiting");
+            } catch(Exception ex) {
                 Console.WriteLine($"IOExeption: {ex.ToString()}, exiting");
             }
         }

@@ -5,7 +5,7 @@ namespace NSISInfoWriter.OutputGenerator
 {
     public class NsisScriptWriter
     {
-        private IScriptWriter writer;
+        private readonly IScriptWriter writer;
         private readonly List<string> outputContent;
 
         public string Prefix { get; private set; }

@@ -4,7 +4,7 @@ namespace NSISInfoWriter.OutputGenerator
 {
     public class FileWriter : IScriptWriter
     {
-        private string fileName;
+        private readonly string fileName;
 
         public FileWriter(string fileName) {
             this.fileName = fileName;

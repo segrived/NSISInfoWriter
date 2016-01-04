@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using NSISInfoWriter.InfoParsers.VCS;
 
-namespace NSISInfoWriter.VCSInformationParser
+namespace NSISInfoWriter.InfoParsers
 {
+    public enum VCSType { Git, Subversion, Mercurial }
+
     public abstract class VCSInfoParser
     {
         protected string workingDirectory;
@@ -11,7 +14,7 @@ namespace NSISInfoWriter.VCSInformationParser
 
         protected Dictionary<string, string> generated = new Dictionary<string, string>();
 
-        public VCSInfoParser(string vcsExec, string wd, string timeFormat) {
+        protected VCSInfoParser(string vcsExec, string wd, string timeFormat) {
             this.vcsExec = vcsExec;
             this.workingDirectory = wd;
             this.timeFormat = timeFormat;

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NSISInfoWriter.VCSInformationParser
+namespace NSISInfoWriter.InfoParsers.VCS
 {
     public class GitParser : VCSInfoParser
     {

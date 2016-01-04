@@ -1,19 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace NSISInfoWriter
+namespace NSISInfoWriter.InfoParsers
 {
     public enum VersionType
     {
         Product, File
     }
 
-    public class VersionInfoGenerator
+    public class VersionInfoParser
     {
         public FileVersionInfo VersionInformation { get; private set; }
         public string VersionFormat { get; private set; }
 
-        public VersionInfoGenerator(string fileName, string versionFormat) {
+        public VersionInfoParser(string fileName, string versionFormat) {
             this.VersionInformation = FileVersionInfo.GetVersionInfo(fileName);
             this.VersionFormat = versionFormat;
         }
