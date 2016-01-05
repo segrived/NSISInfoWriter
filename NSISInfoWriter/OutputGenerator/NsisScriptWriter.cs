@@ -9,23 +9,25 @@ namespace NSISInfoWriter.OutputGenerator
         private readonly List<string> outputContent;
 
         public string Prefix { get; private set; }
-        public bool IgnoreEmpty { get; private set; }
+        public bool IncludeEmpty { get; private set; }
 
-        public NsisScriptWriter(IScriptWriter writer, string prefix, bool ignoreEmpty) {
+        public NsisScriptWriter(IScriptWriter writer, string prefix, bool includeEmpty) {
             this.outputContent = new List<string>();
             this.writer = writer;
 
             this.Prefix = prefix;
-            this.IgnoreEmpty = ignoreEmpty;
+            this.IncludeEmpty = includeEmpty;
         }
 
         public void Add(string key, string value) {
             if (value == null) {
                 value = String.Empty;
             }
-            if (this.IgnoreEmpty && (String.IsNullOrWhiteSpace(value) || value == "0")) {
+
+            if (!this.IncludeEmpty && (String.IsNullOrWhiteSpace(value) || value == "0")) {
                 return;
             }
+
             // prefixes
             if (!String.IsNullOrWhiteSpace(this.Prefix)) {
                 key = String.Format("{0}_{1}", Prefix, key);

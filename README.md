@@ -76,7 +76,7 @@ SVN_REPO_URL               Repository URL
 -p, --prefix          (Default: "") Constants prefix in output script
 -r, --repo-path       (Default: "") Path to VCS repository
                       If not specified, input file directory will be used instead
--e, --ignore-empty    (Default: false) Empty values will be rejected from output
+-e, --inlcude-empty   (Default: false) Empty and zero values will be included to output
 -f, --version-format  (Default: %mj%.%mi%.%b%.%p%) Version information formation
                       Available placeholders:
                       %mj% - major version part

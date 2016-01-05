@@ -25,8 +25,8 @@ namespace NSISInfoWriter
         [Option('r', "repo-path", Default = "", HelpText = "Path to VCS repository")]
         public string RepoPath { get; set; }
 
-        [Option('e', "ignore-empty", Default = false, HelpText = "Empty values will be rejected from output")]
-        public bool IgnoreEmpty { get; set; }
+        [Option('e', "include-empty", Default = false, HelpText = "Empty values will be included to output")]
+        public bool IncludeEmpty { get; set; }
 
         [Option('f', "version-format", Default = "%mj%.%mi%.%b%.%p%", HelpText = "Version information format")]
         public string VersionFormat {get; set; }
