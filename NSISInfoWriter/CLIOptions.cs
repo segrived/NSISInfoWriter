@@ -33,5 +33,8 @@ namespace NSISInfoWriter
 
         [Option('d', "date-format", Default = "yyyyMMddHHmmss", HelpText = "Date/time format")]
         public string DateFormat { get; set; }
+
+        [Option("prepend", Default = false, HelpText = "If true, content will be written to top of output file")]
+        public bool PrependToFile { get; set; }
     }
 }

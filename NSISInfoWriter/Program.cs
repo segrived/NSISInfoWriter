@@ -34,9 +34,9 @@ namespace NSISInfoWriter
                 if (!Path.HasExtension(outFile)) {
                     outFile = $"{outFile}.{DefaultOutputFileExt}";
                 }
-                writer = new FileWriter(outFile);
+                writer = new FileWriter(outFile, o.PrependToFile);
             }
-
+            
             var generator = new NsisScriptWriter(writer, o.Prefix, o.IncludeEmpty);
 
             try {

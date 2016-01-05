@@ -86,6 +86,8 @@ SVN_REPO_URL               Repository URL
                       %p%  - private version part
                       Example: "v%mj%.%mi% (build %b%)" => v2.7 (build 123)
 -d, --date-format     (Default: yyyyMMddHHmmss) Date/time format
+--prepend             (Default: false) Instead of overriding output file, content will be prepended to file.
+                      If output file already include prepended data, this content will be removed
 --help                Display this help screen.
 --version             Display version information.
 ```
