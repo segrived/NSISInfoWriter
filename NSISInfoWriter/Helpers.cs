@@ -37,5 +37,16 @@ namespace NSISInfoWriter
             return new FileInfo(fileName).FullName;
         }
 
+        public static void ShowColor(string message, ConsoleColor c) {
+            var oldColor = Console.ForegroundColor;
+            Console.ForegroundColor = c;
+            Console.WriteLine(message);
+            Console.ForegroundColor = oldColor;
+        }
+
+        public static void ShowError(string message) {
+            Helpers.ShowColor(message, ConsoleColor.Red);
+        }
+
     }
 }

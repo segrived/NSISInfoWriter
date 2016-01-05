@@ -13,23 +13,18 @@ namespace NSISInfoWriter
 
         static void WriteResults(CLIOptions o) {
             if (o.ExcludeCommon && o.ExcludeVCS && o.ExcludeVersion) {
-                Console.WriteLine("ERROR: Everything was excluded, nothing to do");
+                Helpers.ShowError("Error: Everything was excluded, nothing to do");
                 Environment.Exit(1);
             }
 
             var fullFileName = Helpers.GetFullFileName(o.InputFile);
 
-            if (! File.Exists(fullFileName)) {
-                Console.WriteLine("ERROR: Input file does not exist");
-            }
-
             var writer = (o.OutputFile.Equals(StdoutFileName, StringComparison.OrdinalIgnoreCase))
                 ? (IScriptWriter)new ConsoleWriter()
                 : (IScriptWriter)new FileWriter(o.OutputFile, o.PrependToFile);
-            
-            var generator = new NsisScriptWriter(writer, o.Prefix, o.IncludeEmpty);
 
             try {
+                var generator = new NsisScriptWriter(writer, o.Prefix, o.IncludeEmpty);
                 generator.Add("SCRIPT_GENERATE_TIME", DateTime.Now.ToString(o.DateFormat));
 
                 // common file information
@@ -70,13 +65,12 @@ namespace NSISInfoWriter
                 }
 
                 generator.Save();
-
             } catch (FileNotFoundException) {
-                Console.WriteLine($"File not found: {o.InputFile}, exiting");
-            } catch (IOException ex) {
-                Console.WriteLine($"IOExeption: {ex.ToString()}, exiting");
-            } catch(Exception ex) {
-                Console.WriteLine($"IOExeption: {ex.ToString()}, exiting");
+                Helpers.ShowError($"File '{o.InputFile}' not found, exiting");
+            } catch (IOException) {
+                Helpers.ShowError($"IOExeption: {o.InputFile}, exiting");
+            } catch (Exception ex) {
+                Helpers.ShowError($"Error while generating process: {ex.Message}, exiting");
             }
         }
 
