@@ -6,7 +6,7 @@ namespace NSISInfoWriter.InfoParsers
 {
     public enum FileSizeInformationUnit : long
     {
-        B  = 1L,
+        B = 1L,
         KB = 1024L,
         MB = 1048576L,
         GB = 1073741824L
@@ -49,7 +49,7 @@ namespace NSISInfoWriter.InfoParsers
             try {
                 var arch = Helpers.GetImageArchitecture(this.FileName);
                 return Helpers.ImageArchitectureToString(arch);
-            } catch(BadImageFormatException) {
+            } catch (BadImageFormatException) {
                 return String.Empty;
             }
         }

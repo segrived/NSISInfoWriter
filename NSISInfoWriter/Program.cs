@@ -10,7 +10,6 @@ namespace NSISInfoWriter
     class Program
     {
         public const string StdoutFileName = "stdout";
-        public const string DefaultOutputFileExt = "nsh";
 
         static void WriteResults(CLIOptions o) {
             if (o.ExcludeCommon && o.ExcludeVCS && o.ExcludeVersion) {
@@ -18,24 +17,15 @@ namespace NSISInfoWriter
                 Environment.Exit(1);
             }
 
-            var fullFileName = new FileInfo(o.InputFile).FullName;
+            var fullFileName = Helpers.GetFullFileName(o.InputFile);
 
             if (! File.Exists(fullFileName)) {
                 Console.WriteLine("ERROR: Input file does not exist");
             }
 
-            string outFile = o.OutputFile;
-
-            IScriptWriter writer;
-
-            if (outFile.Equals(StdoutFileName, StringComparison.OrdinalIgnoreCase)) {
-                writer = new ConsoleWriter();
-            } else {
-                if (!Path.HasExtension(outFile)) {
-                    outFile = $"{outFile}.{DefaultOutputFileExt}";
-                }
-                writer = new FileWriter(outFile, o.PrependToFile);
-            }
+            var writer = (o.OutputFile.Equals(StdoutFileName, StringComparison.OrdinalIgnoreCase))
+                ? (IScriptWriter)new ConsoleWriter()
+                : (IScriptWriter)new FileWriter(o.OutputFile, o.PrependToFile);
             
             var generator = new NsisScriptWriter(writer, o.Prefix, o.IncludeEmpty);
 
