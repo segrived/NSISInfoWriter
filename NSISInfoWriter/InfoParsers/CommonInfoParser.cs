@@ -21,6 +21,7 @@ namespace NSISInfoWriter.InfoParsers
         public CommonInfoParser(string fileName, string dateFormat) {
             this.FileName = fileName;
             this.FileInformation = new FileInfo(fileName);
+            this.DateFormat = dateFormat;
         }
 
         private string GetFileName() {
