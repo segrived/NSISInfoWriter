@@ -23,7 +23,7 @@ namespace NSISInfoWriter.OutputGenerator
             if (value == null) {
                 value = String.Empty;
             }
-            if (this.IgnoreEmpty && String.IsNullOrWhiteSpace(value)) {
+            if (this.IgnoreEmpty && (String.IsNullOrWhiteSpace(value) || value == "0")) {
                 return;
             }
             // prefixes
