@@ -9,6 +9,7 @@ namespace NSISInfoWriter
 {
     class Program
     {
+        public const string StdoutFileName = "stdout";
         public const string DefaultOutputFileExt = "nsh";
 
         static void WriteResults(CLIOptions o) {
@@ -23,12 +24,17 @@ namespace NSISInfoWriter
                 Console.WriteLine("ERROR: Input file does not exist");
             }
 
-            var writer = o.OutputFile.Equals("stdout", StringComparison.OrdinalIgnoreCase)
-                ? (IScriptWriter)new ConsoleWriter()
-                : (IScriptWriter)new FileWriter(o.OutputFile);
+            string outFile = o.OutputFile;
 
-            if (!Path.HasExtension(o.OutputFile)) {
-                o.OutputFile = $"{o.OutputFile}.{DefaultOutputFileExt}";
+            IScriptWriter writer;
+
+            if (outFile.Equals(StdoutFileName, StringComparison.OrdinalIgnoreCase)) {
+                writer = new ConsoleWriter();
+            } else {
+                if (!Path.HasExtension(outFile)) {
+                    outFile = $"{outFile}.{DefaultOutputFileExt}";
+                }
+                writer = new FileWriter(outFile);
             }
 
             var generator = new NsisScriptWriter(writer, o.Prefix, o.IncludeEmpty);
