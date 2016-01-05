@@ -37,6 +37,7 @@ VI_FMT_PRODUCTIONVERSION    Product version (formatted)
 VI_FMT_FILEVERSION          File version (formatted)
 VI_COPYRIGHTS               Input file copyrights
 VI_DESCRIPTION              Input file description
+VI_PRODUCT_NAME             Product name
 ```
 <a name="versionfn">1</a>: Difference between FileVersion and ProductVersion
 

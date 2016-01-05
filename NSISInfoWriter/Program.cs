@@ -28,7 +28,7 @@ namespace NSISInfoWriter
                 : (IScriptWriter)new FileWriter(o.OutputFile);
 
             if (!Path.HasExtension(o.OutputFile)) {
-                o.OutputFile = String.Format("{0}.{1}", o.OutputFile, DefaultOutputFileExt);
+                o.OutputFile = $"{o.OutputFile}.{DefaultOutputFileExt}";
             }
 
             var generator = new NsisScriptWriter(writer, o.Prefix, o.IncludeEmpty);

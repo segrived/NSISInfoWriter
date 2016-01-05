@@ -39,6 +39,10 @@ namespace NSISInfoWriter.InfoParsers
             return this.VersionInformation.CompanyName;
         }
 
+        private string GetProductName() {
+            return this.VersionInformation.ProductName;
+        }
+
         private string GetFormattedVersion(VersionType versionType) {
 
             int minorPart, majorPart, buildPart, privatePart;
@@ -69,7 +73,8 @@ namespace NSISInfoWriter.InfoParsers
                 { "VI_FMT_PRODUCTIONVERSION", this.GetFormattedVersion(VersionType.Product) },
                 { "VI_COPYRIGHTS"           , this.GetCopyrights() },
                 { "VI_DESCRIPTION"          , this.GetDescription() },
-                { "VI_COMPANY"              , this.GetCompany() }
+                { "VI_COMPANY"              , this.GetCompany() },
+                { "VI_PRODUCT_NAME"         , this.GetProductName() }
             };
         }
     }

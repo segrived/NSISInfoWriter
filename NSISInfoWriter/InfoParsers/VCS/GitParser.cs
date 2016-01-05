@@ -17,7 +17,7 @@ namespace NSISInfoWriter.InfoParsers.VCS
 
         private string GetLastCommitHash(bool isShort = true) {
             var fmt = isShort ? "%h" : "%H";
-            return this.cmdProcessor.GetCommandOutput("log --pretty=format:" + fmt + " -n 1");
+            return this.cmdProcessor.GetCommandOutput($"log --pretty=format:{fmt} -n 1");
         }
 
         private string GetLastCommitDate() {
