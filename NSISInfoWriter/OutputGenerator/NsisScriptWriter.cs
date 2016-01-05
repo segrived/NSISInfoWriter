@@ -24,7 +24,9 @@ namespace NSISInfoWriter.OutputGenerator
                 value = String.Empty;
             }
 
-            if (!this.IncludeEmpty && (String.IsNullOrWhiteSpace(value) || value == "0")) {
+            bool isEmpty = String.IsNullOrWhiteSpace(value) || value == "0";
+
+            if (!this.IncludeEmpty && isEmpty) {
                 return;
             }
 

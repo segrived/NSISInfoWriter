@@ -31,7 +31,7 @@ namespace NSISInfoWriter
         [Option('f', "version-format", Default = "%mj%.%mi%.%b%.%p%", HelpText = "Version information format")]
         public string VersionFormat {get; set; }
 
-        [Option('d', "date-format", Default = "yyyyMMddHHmmss", HelpText = "Date/time format")]
+        [Option('d', "date-format", Default = "yyyy-MM-dd_HH-mm-ss", HelpText = "Date/time format")]
         public string DateFormat { get; set; }
 
         [Option("prepend", Default = false, HelpText = "If true, content will be written to top of output file")]

@@ -68,9 +68,14 @@ SVN_REPO_URL               Repository URL
 ```
 
 ## Command line options
+**Required arguments:**
 ```
 -i, --input           Required. Input executable or dll file name
 -o, --output          Required. Output file name
+```
+
+**Optional Arguments:**
+```
 -s, --ex-vcs          (Default: false) Exclude version control system(s) related information from output
 -c, --ex-common       (Default: false) Exclude common file information from output (size, name, etc.)
 -v, --ex-version      (Default: false) Exclude version information from output
@@ -85,7 +90,7 @@ SVN_REPO_URL               Repository URL
                       %b%  - build version part
                       %p%  - private version part
                       Example: "v%mj%.%mi% (build %b%)" => v2.7 (build 123)
--d, --date-format     (Default: yyyyMMddHHmmss) Date/time format
+-d, --date-format     (Default: yyyy-MM-dd_HH-mm-ss) Date/time format
 --prepend             (Default: false) Instead of overriding output file, content will be prepended to file.
                       If output file already include prepended data, this content will be removed
 --help                Display this help screen.
