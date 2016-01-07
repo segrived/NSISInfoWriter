@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using NSISInfoWriter.InfoParsers.VCS;
 
 namespace NSISInfoWriter.InfoParsers
 {
@@ -20,11 +19,10 @@ namespace NSISInfoWriter.InfoParsers
             this.timeFormat = timeFormat;
             this.cmdProcessor = new CommandProcessor(vcsExec, wd);
         }
-    
-        abstract public string Prefix {get; }
 
-        virtual public bool IsAvailableVCSExecutable()
-        {
+        abstract public string Prefix { get; }
+
+        virtual public bool IsAvailableVCSExecutable() {
             int code = this.cmdProcessor.GetExitCode("--version");
             return code == 0;
         }

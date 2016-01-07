@@ -4,6 +4,7 @@ using CommandLine;
 using NSISInfoWriter.OutputGenerator;
 using NSISInfoWriter.InfoParsers;
 using NSISInfoWriter.InfoParsers.VCS;
+using System.Diagnostics;
 
 namespace NSISInfoWriter
 {
@@ -35,8 +36,11 @@ namespace NSISInfoWriter
 
                 // version file information
                 if (!o.ExcludeVersion) {
-                    var versionInfo = new VersionInfoParser(fullFileName, o.VersionFormat);
+                    var versionInfo = new PEMetainfoParser(fullFileName, o.VersionFormat);
                     generator.AddRange(versionInfo.Generate());
+
+                    var jarInfoParser = new JarMetainfoParser(fullFileName);
+                    generator.AddRange(jarInfoParser.Generate());
                 }
 
                 var repoPath = String.IsNullOrEmpty(o.RepoPath)

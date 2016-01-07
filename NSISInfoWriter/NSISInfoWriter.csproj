@@ -50,6 +50,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -62,6 +64,7 @@
     <Compile Include="CommandProcessor.cs" />
     <Compile Include="InfoParsers\CommonInfoParser.cs" />
     <Compile Include="Helpers.cs" />
+    <Compile Include="InfoParsers\JarMetainfoParser.cs" />
     <Compile Include="OutputGenerator\ConsoleWriter.cs" />
     <Compile Include="OutputGenerator\FileWriter.cs" />
     <Compile Include="OutputGenerator\IScriptWriter.cs" />
@@ -72,7 +75,7 @@
     <Compile Include="InfoParsers\VCS\MercurialParser.cs" />
     <Compile Include="InfoParsers\VCS\SubversionParser.cs" />
     <Compile Include="InfoParsers\VCSInfoParser.cs" />
-    <Compile Include="InfoParsers\VersionInfoParser.cs" />
+    <Compile Include="InfoParsers\PEMetainfoParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

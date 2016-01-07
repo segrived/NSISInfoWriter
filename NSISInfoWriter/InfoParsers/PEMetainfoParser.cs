@@ -8,12 +8,12 @@ namespace NSISInfoWriter.InfoParsers
         Product, File
     }
 
-    public class VersionInfoParser
+    public class PEMetainfoParser
     {
         public FileVersionInfo VersionInformation { get; private set; }
         public string VersionFormat { get; private set; }
 
-        public VersionInfoParser(string fileName, string versionFormat) {
+        public PEMetainfoParser(string fileName, string versionFormat) {
             this.VersionInformation = FileVersionInfo.GetVersionInfo(fileName);
             this.VersionFormat = versionFormat;
         }
@@ -25,7 +25,6 @@ namespace NSISInfoWriter.InfoParsers
         private string GetProductVersion() {
             return this.VersionInformation.ProductVersion;
         }
-
 
         private string GetCopyrights() {
             return this.VersionInformation.LegalCopyright;
@@ -44,7 +43,6 @@ namespace NSISInfoWriter.InfoParsers
         }
 
         private string GetFormattedVersion(VersionType versionType) {
-
             int minorPart, majorPart, buildPart, privatePart;
             if (versionType == VersionType.File) {
                 minorPart = this.VersionInformation.FileMinorPart;

@@ -14,9 +14,9 @@ namespace NSISInfoWriter.InfoParsers
 
     public class CommonInfoParser
     {
-        public string FileName { get; }
-        public FileInfo FileInformation { get; }
-        public string DateFormat { get; }
+        private string FileName { get; }
+        private FileInfo FileInformation { get; }
+        private string DateFormat { get; }
 
         public CommonInfoParser(string fileName, string dateFormat) {
             this.FileName = fileName;

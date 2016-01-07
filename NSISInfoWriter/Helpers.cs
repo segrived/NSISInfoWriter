@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace NSISInfoWriter
@@ -48,5 +49,16 @@ namespace NSISInfoWriter
             Helpers.ShowColor(message, ConsoleColor.Red);
         }
 
+
+        public static List<string> SplitByLines(this string input) {
+            var lines = new List<string>();
+            string line;
+            using (var reader = new StringReader(input)) {
+                while ((line = reader.ReadLine()) != null) {
+                    lines.Add(line);
+                }
+            }
+            return lines;
+        }
     }
 }
