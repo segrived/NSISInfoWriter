@@ -29,7 +29,9 @@ FILE_ARCHITECTURE  Target architecture (possible values: x86 and x64)
                    Will not written to output if invalid PE image
 ```
 
-### Version information (can be excluded by -v)
+### Metainformation (can be excluded by -v)
+
+#### For PE images:
 ```
 VI_PRODUCTIONVERSION        Product version <sup>[1](#versionfn)</sup>
 VI_FILEVERSION              File version <sup>[1](#versionfn)</sup>
@@ -40,6 +42,13 @@ VI_DESCRIPTION              Input file description
 VI_PRODUCT_NAME             Product name
 ```
 <a name="versionfn">1</a>: Difference between FileVersion and ProductVersion
+
+#### For JRE files:
+For JRE files, all information from META-INF/MANIFEST.MF is available, with some modification:
+- All keys started with ```VI_``` prefix
+- All ```-``` chars in key replaces with ```_```
+- Keys also upcased
+So ```Implementation-Version``` information will be avalible with key ```VI_IMPLEMENTATION_VERSION```
 
 ### VCS information  (can be excluded by -s)
 

@@ -93,8 +93,8 @@ namespace NSISInfoWriter.InfoParsers
 
         private string FormatVersionParts(int major, int minor, int build, int priv) {
             var formattedString = this.VersionFormat
-                .Replace("%mi%", major.ToString())
-                .Replace("%mj%", minor.ToString())
+                .Replace("%mj%", major.ToString())
+                .Replace("%mi%", minor.ToString())
                 .Replace("%b%", build.ToString())
                 .Replace("%p%", priv.ToString());
             return formattedString;
