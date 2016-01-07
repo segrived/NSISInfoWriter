@@ -36,11 +36,13 @@ namespace NSISInfoWriter
 
                 // version file information
                 if (!o.ExcludeVersion) {
-                    var versionInfo = new PEMetainfoParser(fullFileName, o.VersionFormat);
-                    generator.AddRange(versionInfo.Generate());
-
-                    var jarInfoParser = new JarMetainfoParser(fullFileName);
-                    generator.AddRange(jarInfoParser.Generate());
+                    if (Helpers.IsValidPEImage(fullFileName)) {
+                        var versionInfo = new PEMetainfoParser(fullFileName, o.VersionFormat);
+                        generator.AddRange(versionInfo.Generate());
+                    } else if (Helpers.IsValidJar(fullFileName)) {
+                        var jarInfoParser = new JarMetainfoParser(fullFileName);
+                        generator.AddRange(jarInfoParser.Generate());
+                    }
                 }
 
                 var repoPath = String.IsNullOrEmpty(o.RepoPath)

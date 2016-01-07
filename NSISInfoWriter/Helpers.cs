@@ -34,6 +34,24 @@ namespace NSISInfoWriter
             return arch == FileArchitecture.Pe32 ? "x86" : "x64";
         }
 
+        public static bool IsValidPEImage(string filePath) {
+            using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            using (var reader = new BinaryReader(stream)) {
+                return (reader.ReadInt16() == 0x5A4D);
+            }
+        }
+
+        public static bool IsValidJar(string filePath) {
+            // minimum size of zip file
+            if (new FileInfo(filePath).Length < 22) {
+                return false;
+            }
+            using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            using (var reader = new BinaryReader(stream)) {
+                return (reader.ReadInt32() == 0x04034B50);
+            }
+        }
+
         public static string GetFullFileName(string fileName) {
             return new FileInfo(fileName).FullName;
         }
