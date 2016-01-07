@@ -53,7 +53,7 @@ namespace NSISInfoWriter.InfoParsers
 
             foreach (var line in manifestContent) {
                 var match = lineRegex.Match(line);
-                if (match.Success) {
+                if (!match.Success) {
                     continue;
                 }
                 var key = match.Groups["key"].Value

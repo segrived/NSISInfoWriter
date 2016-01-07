@@ -20,6 +20,7 @@ namespace NSISInfoWriter.InfoParsers
         public PEMetainfoParser(string fileName, string versionFormat) {
             this.VersionInformation = FileVersionInfo.GetVersionInfo(fileName);
             this.VersionFormat = versionFormat;
+            this.FileName = fileName;
         }
 
         public bool IsValid() {
