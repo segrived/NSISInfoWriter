@@ -4,7 +4,6 @@ using CommandLine;
 using NSISInfoWriter.OutputGenerator;
 using NSISInfoWriter.InfoParsers;
 using NSISInfoWriter.InfoParsers.VCS;
-using System.Diagnostics;
 
 namespace NSISInfoWriter
 {
@@ -36,11 +35,12 @@ namespace NSISInfoWriter
 
                 // version file information
                 if (!o.ExcludeVersion) {
-                    if (Helpers.IsValidPEImage(fullFileName)) {
-                        var versionInfo = new PEMetainfoParser(fullFileName, o.VersionFormat);
+                    var versionInfo = new PEMetainfoParser(fullFileName, o.VersionFormat);
+                    if (versionInfo.IsValid()) {
                         generator.AddRange(versionInfo.Generate());
-                    } else if (Helpers.IsValidJar(fullFileName)) {
-                        var jarInfoParser = new JarMetainfoParser(fullFileName);
+                    }
+                    var jarInfoParser = new JarMetainfoParser(fullFileName);
+                    if (jarInfoParser.IsValid()) {
                         generator.AddRange(jarInfoParser.Generate());
                     }
                 }
@@ -74,7 +74,7 @@ namespace NSISInfoWriter
             } catch (FileNotFoundException) {
                 Helpers.ShowError($"File '{o.InputFile}' not found, exiting");
             } catch (IOException) {
-                Helpers.ShowError($"IOExeption: {o.InputFile}, exiting");
+                Helpers.ShowError($"IOExeption: '{o.InputFile}', exiting");
             } catch (Exception ex) {
                 Helpers.ShowError($"Error while generating process: {ex.Message}, exiting");
             }

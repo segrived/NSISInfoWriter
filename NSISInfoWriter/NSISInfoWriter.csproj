@@ -76,6 +76,7 @@
     <Compile Include="InfoParsers\VCS\SubversionParser.cs" />
     <Compile Include="InfoParsers\VCSInfoParser.cs" />
     <Compile Include="InfoParsers\PEMetainfoParser.cs" />
+    <Compile Include="SignatureReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

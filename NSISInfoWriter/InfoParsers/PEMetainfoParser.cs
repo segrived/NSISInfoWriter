@@ -10,12 +10,21 @@ namespace NSISInfoWriter.InfoParsers
 
     public class PEMetainfoParser
     {
-        public FileVersionInfo VersionInformation { get; private set; }
-        public string VersionFormat { get; private set; }
+        private string FileName { get; set; }
+        private FileVersionInfo VersionInformation { get; set; }
+        private string VersionFormat { get; set; }
+
+        // PE image signature = 50 4B
+        private const short PESignature = 0x5A4D;
 
         public PEMetainfoParser(string fileName, string versionFormat) {
             this.VersionInformation = FileVersionInfo.GetVersionInfo(fileName);
             this.VersionFormat = versionFormat;
+        }
+
+        public bool IsValid() {
+            var sigReader = new SignatureReader(this.FileName);
+            return sigReader.ReadSignature16() == PESignature;
         }
 
         private string GetFileVersion() {
