@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace NSISInfoWriter.InfoParsers
@@ -14,7 +15,7 @@ namespace NSISInfoWriter.InfoParsers
         private FileVersionInfo VersionInformation { get; set; }
         private string VersionFormat { get; set; }
 
-        // PE image signature = 50 4B
+        // PE image signature = 4D 5A
         private const short PESignature = 0x5A4D;
 
         public PEMetainfoParser(string fileName, string versionFormat) {
@@ -52,33 +53,59 @@ namespace NSISInfoWriter.InfoParsers
             return this.VersionInformation.ProductName;
         }
 
-        private string GetFormattedVersion(VersionType versionType) {
-            int minorPart, majorPart, buildPart, privatePart;
-            if (versionType == VersionType.File) {
-                minorPart = this.VersionInformation.FileMinorPart;
-                majorPart = this.VersionInformation.FileMajorPart;
-                buildPart = this.VersionInformation.FileBuildPart;
-                privatePart = this.VersionInformation.FilePrivatePart;
-            } else {
-                minorPart = this.VersionInformation.ProductMinorPart;
-                majorPart = this.VersionInformation.ProductMajorPart;
-                buildPart = this.VersionInformation.ProductBuildPart;
-                privatePart = this.VersionInformation.ProductPrivatePart;
+        private bool IsFileVersionPresent() {
+            return this.VersionInformation.FileMajorPart != 0
+                || this.VersionInformation.FileMinorPart != 0
+                || this.VersionInformation.FileBuildPart != 0
+                || this.VersionInformation.FilePrivatePart != 0;
+        }
+
+        private bool IsProductVersionPresent() {
+            return this.VersionInformation.ProductMajorPart != 0
+                || this.VersionInformation.ProductMinorPart != 0
+                || this.VersionInformation.ProductBuildPart != 0
+                || this.VersionInformation.ProductPrivatePart != 0;
+        }
+
+
+        private string GetFormattedProductVersion() {
+            if (!this.IsProductVersionPresent()) {
+                return String.Empty;
             }
+            int major = this.VersionInformation.ProductMajorPart;
+            int minor = this.VersionInformation.ProductMinorPart;
+            int build = this.VersionInformation.ProductBuildPart;
+            int priv = this.VersionInformation.ProductPrivatePart;
+            return FormatVersionParts(major, minor, build, priv);
+        }
+
+        private string GetFormattedFileVersion() {
+            if (!this.IsFileVersionPresent()) {
+                return String.Empty;
+            }
+            int major = this.VersionInformation.FileMajorPart;
+            int minor = this.VersionInformation.FileMinorPart;
+            int build = this.VersionInformation.FileBuildPart;
+            int priv = this.VersionInformation.FilePrivatePart;
+            return FormatVersionParts(major, minor, build, priv);
+        }
+
+
+        private string FormatVersionParts(int major, int minor, int build, int priv) {
             var formattedString = this.VersionFormat
-                .Replace("%mi%", minorPart.ToString())
-                .Replace("%mj%", majorPart.ToString())
-                .Replace("%b%", buildPart.ToString())
-                .Replace("%p%", privatePart.ToString());
+                .Replace("%mi%", major.ToString())
+                .Replace("%mj%", minor.ToString())
+                .Replace("%b%", build.ToString())
+                .Replace("%p%", priv.ToString());
             return formattedString;
         }
 
         public Dictionary<string, string> Generate() {
             return new Dictionary<string, string> {
                 { "VI_FILEVERSION"          , this.GetFileVersion()},
-                { "VI_FMT_FILEVERSION"      , this.GetFormattedVersion(VersionType.File) },
+                { "VI_FMT_FILEVERSION"      , this.GetFormattedFileVersion() },
                 { "VI_PRODUCTIONVERSION"    , this.GetProductVersion() },
-                { "VI_FMT_PRODUCTIONVERSION", this.GetFormattedVersion(VersionType.Product) },
+                { "VI_FMT_PRODUCTIONVERSION", this.GetFormattedProductVersion() },
                 { "VI_COPYRIGHTS"           , this.GetCopyrights() },
                 { "VI_DESCRIPTION"          , this.GetDescription() },
                 { "VI_COMPANY"              , this.GetCompany() },
