@@ -48,6 +48,7 @@ For JRE files, all information from META-INF/MANIFEST.MF is available, with some
 - All keys started with ```VI_``` prefix
 - All ```-``` chars in key replaces with ```_```
 - Keys also upcased
+
 So ```Implementation-Version``` information will be avalible with key ```VI_IMPLEMENTATION_VERSION```
 
 ### VCS information  (can be excluded by -s)
