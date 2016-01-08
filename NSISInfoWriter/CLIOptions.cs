@@ -20,7 +20,7 @@ namespace NSISInfoWriter
         public bool ExcludeVersion { get; set; }
 
         [Option('p', "prefix", Default = "", HelpText = "Constants prefix in output script")]
-        public string Prefix { get; set; } 
+        public string Prefix { get; set; }
 
         [Option('r', "repo-path", Default = "", HelpText = "Path to VCS repository")]
         public string RepoPath { get; set; }
@@ -29,12 +29,15 @@ namespace NSISInfoWriter
         public bool IncludeEmpty { get; set; }
 
         [Option('f', "version-format", Default = "%mj%.%mi%.%b%.%p%", HelpText = "Version information format")]
-        public string VersionFormat {get; set; }
+        public string VersionFormat { get; set; }
 
         [Option('d', "date-format", Default = "yyyy-MM-dd_HH-mm-ss", HelpText = "Date/time format")]
         public string DateFormat { get; set; }
 
         [Option("prepend", Default = false, HelpText = "If true, content will be written to top of output file")]
         public bool PrependToFile { get; set; }
+
+        [Option("debug", Default = false, HelpText = "If true, progress will be logged to console")]
+        public bool DebugMode { get; set; }
     }
 }

@@ -65,6 +65,7 @@
     <Compile Include="InfoParsers\CommonInfoParser.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="InfoParsers\JarMetainfoParser.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="OutputGenerator\ConsoleWriter.cs" />
     <Compile Include="OutputGenerator\FileWriter.cs" />
     <Compile Include="OutputGenerator\IScriptWriter.cs" />

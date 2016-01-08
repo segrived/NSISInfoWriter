@@ -25,11 +25,19 @@ namespace NSISInfoWriter.InfoParsers
         private string ReadManifestFile() {
             using (var jarStream = new FileStream(this.FileName, FileMode.Open, FileAccess.Read)) {
                 var e = new ZipArchive(jarStream).GetEntry("META-INF/MANIFEST.MF");
+                if (e == null) {
+                    return String.Empty;
+                }
                 using (var entryStream = e.Open())
                 using (var reader = new StreamReader(entryStream)) {
                     return reader.ReadToEnd();
                 }
             }
+        }
+
+        private string ProcessKey(string key) {
+            var result = key.ToUpper().Replace("-", "_");
+            return $"VI_{result}";
         }
 
         public bool IsValid() {
@@ -50,21 +58,17 @@ namespace NSISInfoWriter.InfoParsers
             } catch (Exception) {
                 return dict;
             }
-
             foreach (var line in manifestContent) {
                 var match = lineRegex.Match(line);
                 if (!match.Success) {
                     continue;
                 }
-                var key = match.Groups["key"].Value
-                    .ToUpper()
-                    .Replace("-", "_");
+                var key = match.Groups["key"].Value;
                 if (string.IsNullOrWhiteSpace(key)) {
                     continue;
                 }
-                key = $"VI_{key}";
                 var value = match.Groups["value"].Value;
-                dict.Add(key, value);
+                dict.Add(this.ProcessKey(key), value);
             }
             return dict;
         }
