@@ -28,7 +28,7 @@ namespace NSISInfoWriter
                     break;
             }
             var time = DateTime.Now.ToString("g");
-            var fullMessage = $"[ {level,-7} ] [{time}] {message}";
+            var fullMessage = $"{level,-7} | [{time}] {message}";
             Helpers.ShowColor(fullMessage, color);
 
         }
