@@ -1,14 +1,14 @@
-﻿using System;
+﻿using NSISInfoWriter.OutputGenerators;
+using System;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace NSISInfoWriter.OutputGenerator
+namespace NSISInfoWriter.OutputWriters
 {
-    public class FileWriter : IScriptWriter
+    public class FileWriter : IWriter
     {
-        private const string StartComment = @"; NSISINFOWRITER START";
-        private const string EndComment   = @"; NSISINFOWRITER END";
+        private const string CommentText = @"NSISINFOWRITER PRIVATE AREA";
 
         private readonly string fileName;
         private readonly bool prepend;
@@ -18,14 +18,16 @@ namespace NSISInfoWriter.OutputGenerator
             this.prepend = prepend;
         }
 
-        public void Write(string content) {
-            var f = prepend 
-                ? (Action<string>)this.WritePrepend 
-                : (Action<string>)this.WriteOverride;
-            f(content);
+        public void Write(ScriptGenerator generator) {
+            var f = prepend
+                ? (Action<ScriptGenerator>)this.WritePrepend
+                : (Action<ScriptGenerator>)this.WriteOverride;
+            f(generator);
         }
 
-        private void WritePrepend(string content) {
+        private void WritePrepend(ScriptGenerator generator) {
+            var fullCommentLine = $"{generator.CommentChar} {CommentText}";
+
             string currentFileContent;
             // if file isn't exists just init file content with empty string
             try {
@@ -33,25 +35,25 @@ namespace NSISInfoWriter.OutputGenerator
             } catch (Exception) {
                 currentFileContent = String.Empty;
             }
-            var r = new Regex($"{StartComment}.*{EndComment}", RegexOptions.Singleline);
+            var r = new Regex($"{fullCommentLine}.*{fullCommentLine}", RegexOptions.Singleline);
             // remove previously generated content
-            var clearedContent = r.Replace(currentFileContent, String.Empty).Trim();
+            var clearedContent = r.Replace(currentFileContent, String.Empty).TrimStart();
             // generate new file content
             var builder = new StringBuilder()
-                .Append(StartComment)
+                .Append(fullCommentLine)
                 .Append(Environment.NewLine)
-                .Append(content)
+                .Append(generator.GetOutput().Trim())
                 .Append(Environment.NewLine)
-                .Append(EndComment)
+                .Append(fullCommentLine)
                 .Append(Environment.NewLine)
                 .Append(clearedContent);
             // write new content to file
             File.WriteAllText(this.fileName, builder.ToString());
         }
 
-        private void WriteOverride(string content) {
+        private void WriteOverride(ScriptGenerator generator) {
             using (var writer = File.CreateText(this.fileName)) {
-                writer.Write(content);
+                writer.Write(generator.GetOutput());
             }
         }
     }

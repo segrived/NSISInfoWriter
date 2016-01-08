@@ -64,19 +64,21 @@
     <Compile Include="CommandProcessor.cs" />
     <Compile Include="InfoParsers\CommonInfoParser.cs" />
     <Compile Include="Helpers.cs" />
-    <Compile Include="InfoParsers\JarMetainfoParser.cs" />
-    <Compile Include="Logger.cs" />
-    <Compile Include="OutputGenerator\ConsoleWriter.cs" />
-    <Compile Include="OutputGenerator\FileWriter.cs" />
-    <Compile Include="OutputGenerator\IScriptWriter.cs" />
-    <Compile Include="OutputGenerator\NsisScriptWriter.cs" />
+    <Compile Include="InfoParsers\IParser.cs" />
+    <Compile Include="InfoParsers\Metainfo\JarParser.cs" />
+    <Compile Include="ConsoleLogger.cs" />
+    <Compile Include="OutputGenerators\ScriptGenerator.cs" />
+    <Compile Include="OutputGenerators\ScriptGeneratorOptions.cs" />
+    <Compile Include="OutputWriters\ConsoleWriter.cs" />
+    <Compile Include="OutputWriters\FileWriter.cs" />
+    <Compile Include="OutputWriters\IWriter.cs" />
+    <Compile Include="OutputGenerators\NsisScriptGenerator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="InfoParsers\VCS\GitParser.cs" />
     <Compile Include="InfoParsers\VCS\MercurialParser.cs" />
     <Compile Include="InfoParsers\VCS\SubversionParser.cs" />
-    <Compile Include="InfoParsers\VCSInfoParser.cs" />
-    <Compile Include="InfoParsers\PEMetainfoParser.cs" />
+    <Compile Include="InfoParsers\Metainfo\PEParser.cs" />
     <Compile Include="SignatureReader.cs" />
   </ItemGroup>
   <ItemGroup>

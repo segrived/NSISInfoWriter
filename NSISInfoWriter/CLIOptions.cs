@@ -28,10 +28,10 @@ namespace NSISInfoWriter
         [Option('e', "include-empty", Default = false, HelpText = "Empty values will be included to output")]
         public bool IncludeEmpty { get; set; }
 
-        [Option('f', "version-format", Default = "%mj%.%mi%.%b%.%p%", HelpText = "Version information format")]
+        [Option("version-format", Default = "%mj%.%mi%.%b%.%p%", HelpText = "Version information format")]
         public string VersionFormat { get; set; }
 
-        [Option('d', "date-format", Default = "yyyy-MM-dd_HH-mm-ss", HelpText = "Date/time format")]
+        [Option("date-format", Default = "yyyy-MM-dd_HH-mm-ss", HelpText = "Date/time format")]
         public string DateFormat { get; set; }
 
         [Option("prepend", Default = false, HelpText = "If true, content will be written to top of output file")]

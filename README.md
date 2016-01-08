@@ -14,11 +14,6 @@ Place program executable file somewhere in PATH or in script directory and just 
 
 ## Available constants in output file
 
-### Global information (always includes)
-```
-SCRIPT_GENERATE_TIME   Script generation time
-```
-
 ### Common file information (can be excluded by -c)
 ```
 FILE_NAME          Input file name
@@ -41,7 +36,7 @@ VI_COPYRIGHTS               Input file copyrights
 VI_DESCRIPTION              Input file description
 VI_PRODUCT_NAME             Product name
 ```
-<a name="versionfn">1</a>: Difference between FileVersion and ProductVersion
+<a name="versionfn">1</a>: [Difference between FileVersion and ProductVersion](http://stackoverflow.com/questions/752162/whats-the-difference-between-a-dlls-fileverison-and-productversion)
 
 #### For JRE files:
 For JRE files, all information from META-INF/MANIFEST.MF is available, with some modification:
@@ -93,16 +88,18 @@ SVN_REPO_URL               Repository URL
 -r, --repo-path       (Default: "") Path to VCS repository
                       If not specified, input file directory will be used instead
 -e, --inlcude-empty   (Default: false) Empty and zero values will be included to output
--f, --version-format  (Default: %mj%.%mi%.%b%.%p%) Version information formation
+--version-format      (Default: %mj%.%mi%.%b%.%p%) Version information formation
                       Available placeholders:
                       %mj% - major version part
                       %mi% - minor version part
                       %b%  - build version part
                       %p%  - private version part
                       Example: "v%mj%.%mi% (build %b%)" => v2.7 (build 123)
--d, --date-format     (Default: yyyy-MM-dd_HH-mm-ss) Date/time format
+                      Note: works only with PE images at this time
+--date-format         (Default: yyyy-MM-dd_HH-mm-ss) Date/time format
 --prepend             (Default: false) Instead of overriding output file, content will be prepended to file.
                       If output file already include prepended data, this content will be removed
+--debug               Display log messages
 --help                Display this help screen.
 --version             Display version information.
 ```

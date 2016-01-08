@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace NSISInfoWriter.InfoParsers
 {
-    public class JarMetainfoParser
+    public class JarParser : IParser
     {
         private string FileName { get; set; }
 
@@ -18,7 +18,7 @@ namespace NSISInfoWriter.InfoParsers
         private readonly Regex lineRegex =
             new Regex("^(?<key>.*):\\s*\"(?<value>.*)\"$", RegexOptions.Compiled);
 
-        public JarMetainfoParser(string fileName) {
+        public JarParser(string fileName) {
             this.FileName = fileName;
         }
 
@@ -40,12 +40,12 @@ namespace NSISInfoWriter.InfoParsers
             return $"VI_{result}";
         }
 
-        public bool IsValid() {
+        public bool IsParseble() {
             if (new FileInfo(this.FileName).Length < MinimumZipFileSize) {
                 return false;
             }
             var sigReader = new SignatureReader(this.FileName);
-            return sigReader.ReadSignature32() == JarSignature;
+            return sigReader.Read32() == JarSignature;
         }
 
         public Dictionary<string, string> Generate() {

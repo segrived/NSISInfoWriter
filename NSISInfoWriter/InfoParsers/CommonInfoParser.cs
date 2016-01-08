@@ -12,47 +12,44 @@ namespace NSISInfoWriter.InfoParsers
         GB = 1073741824L
     }
 
-    public class CommonInfoParser
+    public class CommonInfoParser : IParser
     {
-        private string FileName { get; }
-        private FileInfo FileInformation { get; }
-        private string DateFormat { get; }
+        private string fileName;
+        private FileInfo fileInfo;
+        private string dateFormat;
 
         public CommonInfoParser(string fileName, string dateFormat) {
-            this.FileName = fileName;
-            this.FileInformation = new FileInfo(fileName);
-            this.DateFormat = dateFormat;
+            this.fileName = fileName;
+            this.fileInfo = new FileInfo(fileName);
+            this.dateFormat = dateFormat;
         }
 
-        private string GetFileName() {
-            return this.FileInformation.Name;
-        }
+        private string GetFileName() => fileInfo.Name;
 
         private string GetFileLength(FileSizeInformationUnit unit) {
-            var size = this.FileInformation.Length / (long)unit;
+            var size = fileInfo.Length / (long)unit;
             return size.ToString();
         }
 
-        private string GetFileCreationTime() {
-            return this.FileInformation.CreationTime.ToString(this.DateFormat);
-        }
+        private string GetFileCreationTime() =>
+            fileInfo.CreationTime.ToString(this.dateFormat);
 
-        private string GetFileLastWriteTime() {
-            return this.FileInformation.LastWriteTime.ToString(this.DateFormat);
-        }
+        private string GetFileLastWriteTime() =>
+            fileInfo.LastWriteTime.ToString(this.dateFormat);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns>Returns empty string, if invalid PE image</returns>
+        // Returns empty string, if invalid PE image
         private string GetImageArchitecture() {
             try {
-                var arch = Helpers.GetImageArchitecture(this.FileName);
+                var arch = Helpers.GetImageArchitecture(this.fileName);
                 return Helpers.ImageArchitectureToString(arch);
             } catch (BadImageFormatException) {
                 return String.Empty;
             }
         }
+
+        // IParser Implementation
+
+        public bool IsParseble() => true;
 
         public Dictionary<string, string> Generate() {
             return new Dictionary<string, string> {

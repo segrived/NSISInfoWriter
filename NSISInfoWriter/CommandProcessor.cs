@@ -10,22 +10,22 @@ namespace NSISInfoWriter
 
         private string WorkingDirectory { get; set; }
 
-        public CommandProcessor(string cmd, string wd) {
+        public CommandProcessor(string cmd, string workingDirectory) {
             this.Command = cmd;
-            this.WorkingDirectory = wd;
+            this.WorkingDirectory = workingDirectory;
         }
 
         public CommandProcessor(string cmd) : this(cmd, Environment.CurrentDirectory) { }
 
         private ProcessStartInfo GetPSI(string args) {
             return new ProcessStartInfo {
-                FileName               = this.Command,
-                Arguments              = args,
-                CreateNoWindow         = true,
+                FileName = this.Command,
+                Arguments = args,
+                CreateNoWindow = true,
                 RedirectStandardOutput = true,
-                RedirectStandardError  = true,
-                UseShellExecute        = false,
-                WorkingDirectory       = this.WorkingDirectory
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                WorkingDirectory = this.WorkingDirectory
             };
         }
 
@@ -39,7 +39,11 @@ namespace NSISInfoWriter
             }
         }
 
-        public string GetCommandOutput(string args) {
+        public bool IsZeroExitCode(string args) {
+            return this.GetExitCode(args) == 0;
+        }
+
+        public string GetOut(string args) {
             var p = Process.Start(this.GetPSI(args));
             var output = p.StandardOutput.ReadToEnd();
             return output.Trim();

@@ -11,15 +11,15 @@ namespace NSISInfoWriter
             this.FileName = fileName;
         }
 
-        private T ReadSignatureInternal<T>(Func<BinaryReader, T> f) {
+        private T ReadInternal<T>(Func<BinaryReader, T> f) {
             using (var stream = new FileStream(this.FileName, FileMode.Open, FileAccess.Read))
             using (var reader = new BinaryReader(stream)) {
                 return f(reader);
             }
         }
 
-        public Int16 ReadSignature16() => this.ReadSignatureInternal(r => r.ReadInt16());
-        public Int32 ReadSignature32() => this.ReadSignatureInternal(r => r.ReadInt32());
-        public Int64 ReadSignature64() => this.ReadSignatureInternal(r => r.ReadInt64());
+        public Int16 Read16() => this.ReadInternal(r => r.ReadInt16());
+        public Int32 Read32() => this.ReadInternal(r => r.ReadInt32());
+        public Int64 Read64() => this.ReadInternal(r => r.ReadInt64());
     }
 }

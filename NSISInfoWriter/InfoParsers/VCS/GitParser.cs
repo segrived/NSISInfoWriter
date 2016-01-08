@@ -1,44 +1,49 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace NSISInfoWriter.InfoParsers.VCS
 {
-    public class GitParser : VCSInfoParser
+    public class GitParser : IParser
     {
-        public override string Prefix {get; } = "GIT";
+        public const string Prefix = "GIT";
 
-        public GitParser(string wd, string timeFormat) : base("git", wd, timeFormat) { }
+        private readonly CommandProcessor cmdProcessor;
+        private string timeFormat;
 
-        public override bool IsUnderControl() {
-            // if inside .git directory - false, if directory isn't under git control -
-            // GetCommandOutput will return nothing, because stderr is ignored
-            var res = this.cmdProcessor.GetCommandOutput("rev-parse --is-inside-work-tree");
-            return res == "true";
+        public GitParser(string repoDirectory, string timeFormat) {
+            this.cmdProcessor = new CommandProcessor("git.exe", repoDirectory);
+            this.timeFormat = timeFormat;
         }
+
+        private bool IsAvailableVCSExecutable() =>
+            this.cmdProcessor.IsZeroExitCode("--version");
+
+        private bool IsUnderControl() =>
+            cmdProcessor.GetOut("rev-parse --is-inside-work-tree") == "true";
 
         private string GetLastCommitHash(bool isShort = true) {
             var fmt = isShort ? "%h" : "%H";
-            return this.cmdProcessor.GetCommandOutput($"log --pretty=format:{fmt} -n 1");
+            return cmdProcessor.GetOut($"log --pretty=format:{fmt} -n 1");
         }
 
         private string GetLastCommitDate() {
-            var unformatted = this.cmdProcessor.GetCommandOutput("log --pretty=format:%ai -n 1");
+            var unformatted = cmdProcessor.GetOut("log --pretty=format:%ai -n 1");
             return DateTime.Parse(unformatted).ToString(this.timeFormat);
         }
 
-        private string GetUserName() {
-            return this.cmdProcessor.GetCommandOutput("config user.name");
+
+        public bool IsParseble() {
+            return this.IsAvailableVCSExecutable() && this.IsUnderControl();
         }
 
-        private string GetUserEmail() {
-            return this.cmdProcessor.GetCommandOutput("config user.email");
-        }
-
-        protected override void ParseInformation() {
-            this.AddInformation("LAST_COMMIT_HASH_LONG" , this.GetLastCommitHash(false));
-            this.AddInformation("LAST_COMMIT_HASH_SHORT", this.GetLastCommitHash(true));
-            this.AddInformation("LAST_COMMIT_DATE"      , this.GetLastCommitDate());
-            this.AddInformation("USERNAME"              , this.GetUserName());
-            this.AddInformation("USEREMAIL"             , this.GetUserEmail());
+        public Dictionary<string, string> Generate() {
+            var dict = new Dictionary<string, string>();
+            dict.Add($"{Prefix}_LAST_COMMIT_HASH_LONG", GetLastCommitHash(false));
+            dict.Add($"{Prefix}_LAST_COMMIT_HASH_SHORT", GetLastCommitHash(true));
+            dict.Add($"{Prefix}_LAST_COMMIT_DATE", GetLastCommitDate());
+            dict.Add($"{Prefix}_USERNAME", cmdProcessor.GetOut("config user.name"));
+            dict.Add($"{Prefix}_USEREMAIL", cmdProcessor.GetOut("config user.email"));
+            return dict;
         }
     }
 }
