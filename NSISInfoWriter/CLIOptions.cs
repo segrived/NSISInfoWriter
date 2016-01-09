@@ -39,5 +39,8 @@ namespace NSISInfoWriter
 
         [Option("debug", Default = false, HelpText = "If true, progress will be logged to console")]
         public bool DebugMode { get; set; }
+
+        [Option("system", Default = "nsis", HelpText = "Available values: nsis, inno")]
+        public string InstallSystem { get; set; }
     }
 }

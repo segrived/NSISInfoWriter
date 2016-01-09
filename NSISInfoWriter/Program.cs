@@ -5,6 +5,7 @@ using NSISInfoWriter.InfoParsers;
 using NSISInfoWriter.InfoParsers.VCS;
 using NSISInfoWriter.OutputWriters;
 using NSISInfoWriter.OutputGenerators;
+using System.Collections.Generic;
 
 namespace NSISInfoWriter
 {
@@ -32,7 +33,18 @@ namespace NSISInfoWriter
                     IgnoreEmpty = o.IncludeEmpty
                 };
 
-                var generator = new NsisScriptGenerator(generatorOptions);
+                // TODO: refactor it
+                var installSystems = new Dictionary<string, Lazy<ScriptGenerator>> {
+                    ["nsis"] = new Lazy<ScriptGenerator>(() => new NsisScriptGenerator(generatorOptions)),
+                    ["inno"] = new Lazy<ScriptGenerator>(() => new InnoScriptGenerator(generatorOptions))
+                };
+
+                if (!installSystems.ContainsKey(o.InstallSystem)) {
+                    Helpers.ShowError("Invalid installation system, exiting");
+                    Environment.Exit(1);
+                }
+
+                var generator = installSystems[o.InstallSystem].Value;
 
                 // common file information
                 if (!o.ExcludeCommon) {
