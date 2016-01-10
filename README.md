@@ -11,6 +11,14 @@ Place program executable file somewhere in PATH or in script directory and just 
 !include /NONFATAL "${VERSIONHEADER}"
 ```
 
+or with temp file
+
+```nsis
+!define EXECUTABLE "D:\MyProject\MyExec.exe"
+!tempfile VERSIONHEADER
+!system 'NsisInfoWriter.exe -i "${EXECUTABLE}" -o "${VERSIONHEADER}"'
+!include /NONFATAL "${VERSIONHEADER}"
+```
 
 ## Available constants in output file
 
