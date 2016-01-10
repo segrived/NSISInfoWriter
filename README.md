@@ -7,7 +7,7 @@ Place program executable file somewhere in PATH or in script directory and just 
 ```nsis
 !define EXECUTABLE "D:\MyProject\MyExec.exe"
 !define VERSIONHEADER "VersionInfo.nsh"
-!system 'NsisInfoWriter.exe -i "${EXECUTABLE}" -o "${VERSIONHEADER}"'
+!system 'nsisiw.exe -i "${EXECUTABLE}" -o "${VERSIONHEADER}"'
 !include /NONFATAL "${VERSIONHEADER}"
 ```
 
@@ -16,7 +16,7 @@ or with temp file
 ```nsis
 !define EXECUTABLE "D:\MyProject\MyExec.exe"
 !tempfile VERSIONHEADER
-!system 'NsisInfoWriter.exe -i "${EXECUTABLE}" -o "${VERSIONHEADER}"'
+!system 'nsisiw.exe -i "${EXECUTABLE}" -o "${VERSIONHEADER}"'
 !include /NONFATAL "${VERSIONHEADER}"
 ```
 
