@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 
 namespace NSISInfoWriter.InfoParsers
 {
     public class PEParser : IParser
     {
+        private const int MinimumPEImageSize = 97;
+
         private string FileName { get; set; }
         private FileVersionInfo VInfo { get; set; }
         private string VersionFormat { get; set; }
@@ -70,6 +73,9 @@ namespace NSISInfoWriter.InfoParsers
         }
 
         public bool IsParseble() {
+            if (new FileInfo(this.FileName).Length < MinimumPEImageSize) {
+                return false;
+            }
             var sigReader = new SignatureReader(this.FileName);
             return sigReader.Read16() == PESignature;
         }
