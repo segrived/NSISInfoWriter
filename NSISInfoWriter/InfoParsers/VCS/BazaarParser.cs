@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -68,7 +69,8 @@ namespace NSISInfoWriter.InfoParsers.VCS
         public Dictionary<string, string> Generate() {
             var dict = new Dictionary<string, string>();
             var versionInfo = GetVersionInfo();
-            dict.Add($"{Prefix}_LAST_COMMIT_DATE", versionInfo.Date);
+            var dateTime = DateTime.Parse(versionInfo.Date).ToString(this.timeFormat);
+            dict.Add($"{Prefix}_LAST_COMMIT_DATE", dateTime);
             dict.Add($"{Prefix}_LAST_REVISION_ID", versionInfo.RevisionID);
             dict.Add($"{Prefix}_LAST_REVISION_NUMBER", versionInfo.RevisionNumber);
             dict.Add($"{Prefix}_USEREMAIL", this.GetEmail());
