@@ -67,6 +67,7 @@ namespace NSISInfoWriter
                     generator.AddParser(new GitParser(repoPath, o.DateFormat));
                     generator.AddParser(new MercurialParser(repoPath, o.DateFormat));
                     generator.AddParser(new SubversionParser(repoPath, o.DateFormat));
+                    generator.AddParser(new BazaarParser(repoPath, o.DateFormat));
                 }
                 writer.Write(generator);
 

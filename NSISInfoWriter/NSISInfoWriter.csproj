@@ -67,6 +67,7 @@
     <Compile Include="InfoParsers\IParser.cs" />
     <Compile Include="InfoParsers\Metainfo\JarParser.cs" />
     <Compile Include="ConsoleLogger.cs" />
+    <Compile Include="InfoParsers\VCS\BazaarParser.cs" />
     <Compile Include="OutputGenerators\InnoScriptGenerator.cs" />
     <Compile Include="OutputGenerators\ScriptGenerator.cs" />
     <Compile Include="OutputGenerators\ScriptGeneratorOptions.cs" />
