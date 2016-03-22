@@ -4,18 +4,18 @@ using System.IO;
 using System.IO.Compression;
 using System.Text.RegularExpressions;
 
-namespace NSISInfoWriter.InfoParsers
+namespace NSISInfoWriter.InfoParsers.Metainfo
 {
     public class JarParser : IParser
     {
-        private string FileName { get; set; }
+        private string FileName { get; }
 
         // minimum size of zip file, based on wiki information
         private const int MinimumZipFileSize = 22;
         // Jar (zip) signature = 50 4B 03 04
         private const int JarSignature = 0x04034B50;
 
-        private readonly Regex lineRegex =
+        private readonly Regex _lineRegex =
             new Regex("^(?<key>.*):\\s*\"(?<value>.*)\"$", RegexOptions.Compiled);
 
         public JarParser(string fileName) {
@@ -59,7 +59,7 @@ namespace NSISInfoWriter.InfoParsers
                 return dict;
             }
             foreach (var line in manifestContent) {
-                var match = lineRegex.Match(line);
+                var match = this._lineRegex.Match(line);
                 if (!match.Success) {
                     continue;
                 }

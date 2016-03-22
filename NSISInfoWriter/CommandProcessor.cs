@@ -6,9 +6,9 @@ namespace NSISInfoWriter
 {
     public class CommandProcessor
     {
-        private string Command { get; set; }
+        private string Command { get; }
 
-        private string WorkingDirectory { get; set; }
+        private string WorkingDirectory { get; }
 
         public CommandProcessor(string cmd, string workingDirectory) {
             this.Command = cmd;
@@ -17,7 +17,7 @@ namespace NSISInfoWriter
 
         public CommandProcessor(string cmd) : this(cmd, Environment.CurrentDirectory) { }
 
-        private ProcessStartInfo GetPSI(string args) {
+        private ProcessStartInfo GetPsi(string args) {
             return new ProcessStartInfo {
                 FileName = this.Command,
                 Arguments = args,
@@ -31,7 +31,7 @@ namespace NSISInfoWriter
 
         public int GetExitCode(string args) {
             try {
-                var p = Process.Start(this.GetPSI(args));
+                var p = Process.Start(this.GetPsi(args));
                 p.WaitForExit();
                 return p.ExitCode;
             } catch (Win32Exception) {
@@ -44,7 +44,7 @@ namespace NSISInfoWriter
         }
 
         public string GetOut(string args) {
-            var p = Process.Start(this.GetPSI(args));
+            var p = Process.Start(this.GetPsi(args));
             var output = p.StandardOutput.ReadToEnd();
             return output.Trim();
         }

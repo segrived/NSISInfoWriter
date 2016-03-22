@@ -2,7 +2,7 @@
 
 namespace NSISInfoWriter
 {
-    public class CLIOptions
+    public class CliOptions
     {
         [Option('i', "input", Required = true, HelpText = "Input executable file")]
         public string InputFile { get; set; }
@@ -11,7 +11,7 @@ namespace NSISInfoWriter
         public string OutputFile { get; set; }
 
         [Option('s', "ex-vcs", Default = false, HelpText = "Exclude version control system(s) related information from output")]
-        public bool ExcludeVCS { get; set; }
+        public bool ExcludeVcs { get; set; }
 
         [Option('c', "ex-common", Default = false, HelpText = "Exclude common file information from output (size, name, etc.)")]
         public bool ExcludeCommon { get; set; }

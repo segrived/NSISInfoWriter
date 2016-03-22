@@ -46,7 +46,7 @@ namespace NSISInfoWriter
         }
 
         public static void ShowError(string message) {
-            Helpers.ShowColor(message, ConsoleColor.Red);
+            ShowColor(message, ConsoleColor.Red);
         }
 
 

@@ -7,43 +7,43 @@ namespace NSISInfoWriter.InfoParsers.VCS
     {
         public const string Prefix = "HG";
 
-        private CommandProcessor cmdProcessor;
-        private string timeFormat;
+        private readonly CommandProcessor _cmdProcessor;
+        private readonly string _timeFormat;
 
         public MercurialParser(string repoDirectory, string timeFormat) {
-            this.cmdProcessor = new CommandProcessor("hg.exe", repoDirectory);
-            this.timeFormat = timeFormat;
+            this._cmdProcessor = new CommandProcessor("hg.exe", repoDirectory);
+            this._timeFormat = timeFormat;
         }
 
-        private bool IsAvailableVCSExecutable() =>
-            cmdProcessor.IsZeroExitCode("--version");
+        private bool IsAvailableVcsExecutable() =>
+            this._cmdProcessor.IsZeroExitCode("--version");
 
         private bool IsUnderControl() =>
-            cmdProcessor.IsZeroExitCode("--cwd . root");
+            this._cmdProcessor.IsZeroExitCode("--cwd . root");
 
         private string GetLastCommitHash(bool isShort = true) {
             var command = isShort ? "parent --template {node|short}" : "parent --template {node}";
-            return cmdProcessor.GetOut(command);
+            return this._cmdProcessor.GetOut(command);
         }
 
         private string GetLastCommitDate() {
-            var unformatted = cmdProcessor.GetOut("log --template {date|isodatesec} -l 1");
-            return DateTime.Parse(unformatted).ToString(this.timeFormat);
+            var unformatted = this._cmdProcessor.GetOut("log --template {date|isodatesec} -l 1");
+            return DateTime.Parse(unformatted).ToString(this._timeFormat);
         }
 
         private string GetUserName() =>
-            cmdProcessor.GetOut("showconfig ui.username");
+            this._cmdProcessor.GetOut("showconfig ui.username");
 
         public bool IsParseble() {
-            return this.IsAvailableVCSExecutable() && this.IsUnderControl();
+            return this.IsAvailableVcsExecutable() && this.IsUnderControl();
         }
 
         public Dictionary<string, string> Generate() {
             var dict = new Dictionary<string, string>();
-            dict.Add($"{Prefix}_LAST_COMMIT_HASH_LONG", GetLastCommitHash(false));
-            dict.Add($"{Prefix}_LAST_COMMIT_HASH_SHORT", GetLastCommitHash(true));
-            dict.Add($"{Prefix}_LAST_COMMIT_DATE", GetLastCommitDate());
-            dict.Add($"{Prefix}_USERNAME", GetUserName());
+            dict.Add($"{Prefix}_LAST_COMMIT_HASH_LONG", this.GetLastCommitHash(false));
+            dict.Add($"{Prefix}_LAST_COMMIT_HASH_SHORT", this.GetLastCommitHash(true));
+            dict.Add($"{Prefix}_LAST_COMMIT_DATE", this.GetLastCommitDate());
+            dict.Add($"{Prefix}_USERNAME", this.GetUserName());
             return dict;
         }
     }

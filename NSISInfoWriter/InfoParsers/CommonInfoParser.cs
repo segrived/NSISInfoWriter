@@ -7,40 +7,40 @@ namespace NSISInfoWriter.InfoParsers
     public enum FileSizeInformationUnit : long
     {
         B = 1L,
-        KB = 1024L,
-        MB = 1048576L,
-        GB = 1073741824L
+        Kb = 1024L,
+        Mb = 1048576L,
+        Gb = 1073741824L
     }
 
     public class CommonInfoParser : IParser
     {
-        private string fileName;
-        private FileInfo fileInfo;
-        private string dateFormat;
+        private readonly string _fileName;
+        private readonly FileInfo _fileInfo;
+        private readonly string _dateFormat;
 
         public CommonInfoParser(string fileName, string dateFormat) {
-            this.fileName = fileName;
-            this.fileInfo = new FileInfo(fileName);
-            this.dateFormat = dateFormat;
+            this._fileName = fileName;
+            this._fileInfo = new FileInfo(fileName);
+            this._dateFormat = dateFormat;
         }
 
-        private string GetFileName() => fileInfo.Name;
+        private string GetFileName() => this._fileInfo.Name;
 
         private string GetFileLength(FileSizeInformationUnit unit) {
-            var size = fileInfo.Length / (long)unit;
+            var size = this._fileInfo.Length / (long)unit;
             return size.ToString();
         }
 
         private string GetFileCreationTime() =>
-            fileInfo.CreationTime.ToString(this.dateFormat);
+            this._fileInfo.CreationTime.ToString(this._dateFormat);
 
         private string GetFileLastWriteTime() =>
-            fileInfo.LastWriteTime.ToString(this.dateFormat);
+            this._fileInfo.LastWriteTime.ToString(this._dateFormat);
 
         // Returns empty string, if invalid PE image
         private string GetImageArchitecture() {
             try {
-                var arch = Helpers.GetImageArchitecture(this.fileName);
+                var arch = Helpers.GetImageArchitecture(this._fileName);
                 return Helpers.ImageArchitectureToString(arch);
             } catch (BadImageFormatException) {
                 return String.Empty;
@@ -55,8 +55,8 @@ namespace NSISInfoWriter.InfoParsers
             return new Dictionary<string, string> {
                 { "FILE_NAME"           , this.GetFileName() },
                 { "FILE_LENGTH"         , this.GetFileLength(FileSizeInformationUnit.B) },
-                { "FILE_LENGTH_KB"      , this.GetFileLength(FileSizeInformationUnit.KB) },
-                { "FILE_LENGTH_MB"      , this.GetFileLength(FileSizeInformationUnit.MB) },
+                { "FILE_LENGTH_KB"      , this.GetFileLength(FileSizeInformationUnit.Kb) },
+                { "FILE_LENGTH_MB"      , this.GetFileLength(FileSizeInformationUnit.Mb) },
                 { "FILE_CREATION_DATE"  , this.GetFileCreationTime() },
                 { "FILE_LAST_WRITE_TIME", this.GetFileLastWriteTime() },
                 { "FILE_ARCHITECTURE"   , this.GetImageArchitecture() }

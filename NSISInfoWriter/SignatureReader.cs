@@ -5,7 +5,7 @@ namespace NSISInfoWriter
 {
     public class SignatureReader
     {
-        private string FileName { get; set; }
+        private string FileName { get; }
 
         public SignatureReader(string fileName) {
             this.FileName = fileName;

@@ -6,17 +6,18 @@ using NSISInfoWriter.InfoParsers.VCS;
 using NSISInfoWriter.OutputWriters;
 using NSISInfoWriter.OutputGenerators;
 using System.Collections.Generic;
+using NSISInfoWriter.InfoParsers.Metainfo;
 
 namespace NSISInfoWriter
 {
-    class Program
+    static class Program
     {
         public const string StdoutFileName = "stdout";
 
-        static void WriteResults(CLIOptions o) {
+        static void WriteResults(CliOptions o) {
             ConsoleLogger.IsEnabled = o.DebugMode;
 
-            if (o.ExcludeCommon && o.ExcludeVCS && o.ExcludeVersion) {
+            if (o.ExcludeCommon && o.ExcludeVcs && o.ExcludeVersion) {
                 Helpers.ShowError("Error: Everything was excluded, nothing to do");
                 Environment.Exit(1);
             }
@@ -53,7 +54,7 @@ namespace NSISInfoWriter
 
                 // version file information
                 if (!o.ExcludeVersion) {
-                    generator.AddParser(new PEParser(fullFileName, o.VersionFormat));
+                    generator.AddParser(new PeParser(fullFileName, o.VersionFormat));
                     generator.AddParser(new JarParser(fullFileName));
                 }
 
@@ -63,7 +64,7 @@ namespace NSISInfoWriter
 
                 ConsoleLogger.LogInfo($"Repository path: {repoPath}");
 
-                if ((!o.ExcludeVCS) && Directory.Exists(repoPath)) {
+                if ((!o.ExcludeVcs) && Directory.Exists(repoPath)) {
                     generator.AddParser(new GitParser(repoPath, o.DateFormat));
                     generator.AddParser(new MercurialParser(repoPath, o.DateFormat));
                     generator.AddParser(new SubversionParser(repoPath, o.DateFormat));
@@ -81,7 +82,7 @@ namespace NSISInfoWriter
         }
 
         static void Main(string[] args) {
-            Parser.Default.ParseArguments<CLIOptions>(args).WithParsed(WriteResults);
+            Parser.Default.ParseArguments<CliOptions>(args).WithParsed(WriteResults);
         }
     }
 }

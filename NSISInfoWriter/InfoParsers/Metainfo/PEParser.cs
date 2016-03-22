@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace NSISInfoWriter.InfoParsers
+namespace NSISInfoWriter.InfoParsers.Metainfo
 {
-    public class PEParser : IParser
+    public class PeParser : IParser
     {
-        private const int MinimumPEImageSize = 97;
+        private const int MinimumPeImageSize = 97;
 
-        private string FileName { get; set; }
-        private FileVersionInfo VInfo { get; set; }
-        private string VersionFormat { get; set; }
+        private string FileName { get; }
+        private FileVersionInfo VInfo { get; }
+        private string VersionFormat { get; }
 
         // PE image signature = 4D 5A
-        private const short PESignature = 0x5A4D;
+        private const short PeSignature = 0x5A4D;
 
-        public PEParser(string fileName, string versionFormat) {
+        public PeParser(string fileName, string versionFormat) {
             this.VInfo = FileVersionInfo.GetVersionInfo(fileName);
             this.VersionFormat = versionFormat;
             this.FileName = fileName;
@@ -41,7 +41,7 @@ namespace NSISInfoWriter.InfoParsers
             if (!this.IsProductVersionPresent()) {
                 return String.Empty;
             }
-            var fmt = FormatVersionParts(this.VInfo.ProductMajorPart,
+            var fmt = this.FormatVersionParts(this.VInfo.ProductMajorPart,
                                          this.VInfo.ProductMinorPart,
                                          this.VInfo.ProductBuildPart,
                                          this.VInfo.ProductPrivatePart);
@@ -56,7 +56,7 @@ namespace NSISInfoWriter.InfoParsers
             if (!this.IsFileVersionPresent()) {
                 return String.Empty;
             }
-            var fmt = FormatVersionParts(this.VInfo.FileMajorPart,
+            var fmt = this.FormatVersionParts(this.VInfo.FileMajorPart,
                                          this.VInfo.FileMinorPart,
                                          this.VInfo.FileBuildPart,
                                          this.VInfo.FilePrivatePart);
@@ -73,11 +73,11 @@ namespace NSISInfoWriter.InfoParsers
         }
 
         public bool IsParseble() {
-            if (new FileInfo(this.FileName).Length < MinimumPEImageSize) {
+            if (new FileInfo(this.FileName).Length < MinimumPeImageSize) {
                 return false;
             }
             var sigReader = new SignatureReader(this.FileName);
-            return sigReader.Read16() == PESignature;
+            return sigReader.Read16() == PeSignature;
         }
 
         public Dictionary<string, string> Generate() {

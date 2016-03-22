@@ -10,16 +10,16 @@ namespace NSISInfoWriter.OutputWriters
     {
         private const string CommentText = @"NSISINFOWRITER PRIVATE AREA";
 
-        private readonly string fileName;
-        private readonly bool prepend;
+        private readonly string _fileName;
+        private readonly bool _prepend;
 
         public FileWriter(string fileName, bool prepend) {
-            this.fileName = fileName;
-            this.prepend = prepend;
+            this._fileName = fileName;
+            this._prepend = prepend;
         }
 
         public void Write(ScriptGenerator generator) {
-            var f = prepend
+            var f = this._prepend
                 ? (Action<ScriptGenerator>)this.WritePrepend
                 : (Action<ScriptGenerator>)this.WriteOverride;
             f(generator);
@@ -31,7 +31,7 @@ namespace NSISInfoWriter.OutputWriters
             string currentFileContent;
             // if file isn't exists just init file content with empty string
             try {
-                currentFileContent = File.ReadAllText(this.fileName);
+                currentFileContent = File.ReadAllText(this._fileName);
             } catch (Exception) {
                 currentFileContent = String.Empty;
             }
@@ -48,11 +48,11 @@ namespace NSISInfoWriter.OutputWriters
                 .Append(Environment.NewLine)
                 .Append(clearedContent);
             // write new content to file
-            File.WriteAllText(this.fileName, builder.ToString());
+            File.WriteAllText(this._fileName, builder.ToString());
         }
 
         private void WriteOverride(ScriptGenerator generator) {
-            using (var writer = File.CreateText(this.fileName)) {
+            using (var writer = File.CreateText(this._fileName)) {
                 writer.Write(generator.GetOutput());
             }
         }

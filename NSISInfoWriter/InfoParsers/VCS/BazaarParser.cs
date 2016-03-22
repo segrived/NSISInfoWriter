@@ -9,14 +9,14 @@ namespace NSISInfoWriter.InfoParsers.VCS
     {
         public string Date { get; }
         public string RevisionNumber { get; }
-        public string RevisionID { get; }
+        public string RevisionId { get; }
 
         public BazaarVersionInformation(string input) {
             var revIdRegex = new Regex("revision-id: (.*)");
             var revNoRegex = new Regex("revno: (.*)");
             var dateRegex = new Regex("date: (.*)");
 
-            this.RevisionID = revIdRegex.Match(input).Groups[1].Value;
+            this.RevisionId = revIdRegex.Match(input).Groups[1].Value;
             this.RevisionNumber = revNoRegex.Match(input).Groups[1].Value;
             this.Date = dateRegex.Match(input).Groups[1].Value;
         }
@@ -26,21 +26,21 @@ namespace NSISInfoWriter.InfoParsers.VCS
     {
         public const string Prefix = "BAZAAR";
 
-        private string repoDirectory;
-        private readonly CommandProcessor cmdProcessor;
-        private string timeFormat;
+        private readonly string _repoDirectory;
+        private readonly CommandProcessor _cmdProcessor;
+        private readonly string _timeFormat;
 
         public BazaarParser(string repoDirectory, string timeFormat) {
-            this.cmdProcessor = new CommandProcessor("bzr.exe", repoDirectory);
-            this.timeFormat = timeFormat;
-            this.repoDirectory = repoDirectory;
+            this._cmdProcessor = new CommandProcessor("bzr.exe", repoDirectory);
+            this._timeFormat = timeFormat;
+            this._repoDirectory = repoDirectory;
         }
 
-        private bool IsAvailableVCSExecutable() =>
-            this.cmdProcessor.IsZeroExitCode("help");
+        private bool IsAvailableVcsExecutable() =>
+            this._cmdProcessor.IsZeroExitCode("help");
 
 
-        private bool IsUnderControl() => IsUnderControl(this.repoDirectory);
+        private bool IsUnderControl() => this.IsUnderControl(this._repoDirectory);
         // can't get exit code with simple `status` command
         private bool IsUnderControl(string directory) {
             if (Directory.Exists(Path.Combine(directory, ".bzr"))) {
@@ -50,28 +50,28 @@ namespace NSISInfoWriter.InfoParsers.VCS
                 if (directoryInfo.Parent == null) {
                     return false;
                 }
-                return IsUnderControl(Directory.GetParent(directory).FullName);
+                return this.IsUnderControl(Directory.GetParent(directory).FullName);
             }
         }
 
         public BazaarVersionInformation GetVersionInfo() {
-            var output = cmdProcessor.GetOut("version-info");
+            var output = this._cmdProcessor.GetOut("version-info");
             return new BazaarVersionInformation(output);
         }
 
         public string GetEmail() =>
-            this.cmdProcessor.GetOut("config email");
+            this._cmdProcessor.GetOut("config email");
 
         public bool IsParseble() {
-            return this.IsAvailableVCSExecutable() && this.IsUnderControl(this.repoDirectory);
+            return this.IsAvailableVcsExecutable() && this.IsUnderControl(this._repoDirectory);
         }
 
         public Dictionary<string, string> Generate() {
             var dict = new Dictionary<string, string>();
-            var versionInfo = GetVersionInfo();
-            var dateTime = DateTime.Parse(versionInfo.Date).ToString(this.timeFormat);
+            var versionInfo = this.GetVersionInfo();
+            var dateTime = DateTime.Parse(versionInfo.Date).ToString(this._timeFormat);
             dict.Add($"{Prefix}_LAST_COMMIT_DATE", dateTime);
-            dict.Add($"{Prefix}_LAST_REVISION_ID", versionInfo.RevisionID);
+            dict.Add($"{Prefix}_LAST_REVISION_ID", versionInfo.RevisionId);
             dict.Add($"{Prefix}_LAST_REVISION_NUMBER", versionInfo.RevisionNumber);
             dict.Add($"{Prefix}_USEREMAIL", this.GetEmail());
             return dict;

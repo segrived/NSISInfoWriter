@@ -6,10 +6,10 @@ using System.Text;
 
 namespace NSISInfoWriter.OutputGenerators
 {
-    abstract public class ScriptGenerator
+    public abstract class ScriptGenerator
     {
-        protected ScriptGeneratorOptions Options { get; set; }
-        protected List<IParser> Parsers { get; set; }
+        private ScriptGeneratorOptions Options { get; }
+        private List<IParser> Parsers { get; }
 
         virtual public string CommentChar { get; } = ";";
 
@@ -39,7 +39,7 @@ namespace NSISInfoWriter.OutputGenerators
             return this.Options.IgnoreEmpty || !isEmpty;
         }
 
-        abstract protected string ProcessItem(string key, string value);
+        protected abstract string ProcessItem(string key, string value);
 
         public string GetOutput() {
             var sb = new StringBuilder();
@@ -49,7 +49,7 @@ namespace NSISInfoWriter.OutputGenerators
                     if (!this.IsAllowedItem(item.Key, item.Value)) {
                         continue;
                     }
-                    sb.AppendLine(ProcessItem(item.Key, item.Value));
+                    sb.AppendLine(this.ProcessItem(item.Key, item.Value));
                 }
             }
             return String.Join(Environment.NewLine, sb.ToString());

@@ -7,40 +7,40 @@ namespace NSISInfoWriter.InfoParsers.VCS
     {
         public const string Prefix = "SVN";
 
-        private CommandProcessor cmd;
-        private string timeFormat;
+        private readonly CommandProcessor _cmd;
+        private readonly string _timeFormat;
 
         public SubversionParser(string repoDirectory, string timeFormat) {
-            this.cmd = new CommandProcessor("svn.exe", repoDirectory);
-            this.timeFormat = timeFormat;
+            this._cmd = new CommandProcessor("svn.exe", repoDirectory);
+            this._timeFormat = timeFormat;
         }
 
-        private bool IsAvailableVCSExecutable() =>
-            cmd.IsZeroExitCode("--version");
+        private bool IsAvailableVcsExecutable() =>
+            this._cmd.IsZeroExitCode("--version");
 
         private bool IsUnderControl() =>
-            this.cmd.IsZeroExitCode("info");
+            this._cmd.IsZeroExitCode("info");
 
-        private string GetURL() =>
-            this.cmd.GetOut("info --show-item url");
+        private string GetUrl() =>
+            this._cmd.GetOut("info --show-item url");
 
         private string GetLastRevNumber() =>
-            this.cmd.GetOut("info --show-item revision");
+            this._cmd.GetOut("info --show-item revision");
 
         private string GetLastRevisionDate() {
-            var unformatted = this.cmd.GetOut("info --show-item last-changed-date");
-            return DateTime.Parse(unformatted).ToString(this.timeFormat);
+            var unformatted = this._cmd.GetOut("info --show-item last-changed-date");
+            return DateTime.Parse(unformatted).ToString(this._timeFormat);
         }
 
         public bool IsParseble() {
-            return this.IsAvailableVCSExecutable() && this.IsUnderControl();
+            return this.IsAvailableVcsExecutable() && this.IsUnderControl();
         }
 
         public Dictionary<string, string> Generate() {
             var dict = new Dictionary<string, string>();
-            dict.Add($"{Prefix}_LAST_REVISION_DATE", GetLastRevisionDate());
-            dict.Add($"{Prefix}_LAST_REVISION_NUMBER", GetLastRevNumber());
-            dict.Add($"{Prefix}_REPO_URL", GetURL());
+            dict.Add($"{Prefix}_LAST_REVISION_DATE", this.GetLastRevisionDate());
+            dict.Add($"{Prefix}_LAST_REVISION_NUMBER", this.GetLastRevNumber());
+            dict.Add($"{Prefix}_REPO_URL", this.GetUrl());
             return dict;
         }
     }
