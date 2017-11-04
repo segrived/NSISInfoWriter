@@ -1,0 +1,8 @@
+{
+  "DataCollection": [
+    {
+      "Id": "12df1887-1f1a-436c-9c97-98dd82a96f2b",
+      "Command": " -i \"D:\\Projects\\New folder\\df.txt\" -o out --prepend"
+    }
+  ]
+}
